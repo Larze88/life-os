@@ -64,15 +64,18 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 - Export JSON/CSV in der UI
 - Backup-Download (konsistenter SQLite-Snapshot) + Restore per Upload + Erinnerung „letzter Download vor X Tagen“ (wird ggf. schon in Phase 2 vorgezogen)
 
-## Phase 5 – Deployment auf dem Raspberry Pi
+## Phase 5 – Deployment auf dem Raspberry Pi (vorgezogen, ADR-023)
 
-- Dockerfile (Debian slim, Multi-Stage), GitHub Actions Multi-Arch → GHCR
-- HA-App-Repository: `repository.yaml`, `lifeos/config.yaml`, `DOCS.md`, Icon
-- Tailscale-Knoten im Container, `tailscale serve`, HTTPS-Prüfung
-- Backup-Job + Rotation, HA-Backup-Verhalten (`cold`) prüfen, **Restore-Test**
-- Ressourcenmessung auf dem Pi neben HA
-- Funktionstest: Installation als PWA auf Smartphone, Desktop-Browser
-- Betriebsdoku: Update, Restore, Passwort zurücksetzen
+- [x] Dockerfile (Debian slim, Multi-Stage, ohne Emulation für arm64), `--ignore-scripts` für better-sqlite3-Prebuilds
+- [x] Container lokal getestet: Migration, Seed, Auslieferung, sauberes Beenden (SIGTERM, WAL-Checkpoint), Fehlermeldung ohne Auth-Key; arm64-Build verifiziert
+- [x] GitHub Actions: `release.yml` baut `ghcr.io/larze88/lifeos-aarch64:<version>` bei Tag `v<version>`
+- [x] HA-App-Definition (`deployment/home-assistant/app/`) und Anleitung
+- [x] Tailscale-Knoten im Container (userspace), `tailscale serve`, keine Log-Uploads zu Tailscale
+- [x] Backup-Download, Wiederherstellung per Upload, Erinnerung nach 14 Tagen (ADR-013)
+- [ ] Öffentliches Repo `life-os-ha` anlegen und App-Definition hineinkopieren
+- [ ] Erstes Release (v0.2.0) und Image auf „public“ stellen
+- [ ] Installation auf dem Pi, HTTPS-Prüfung, PWA-Installation auf dem Handy
+- [ ] Ressourcenmessung auf dem Pi neben HA, Restore-Test mit echten Daten
 
 ## Danach (Backlog, priorisierbar)
 

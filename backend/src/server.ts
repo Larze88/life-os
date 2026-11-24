@@ -26,7 +26,7 @@ try {
   process.exit(1);
 }
 
-const services = createServices(config, logger, handle.db);
+const services = createServices(config, logger, handle);
 const seeded = seedModules(handle.db, services.modules);
 if (seeded.length > 0) logger.info({ trackers: seeded }, 'default trackers created');
 services.sessions.purgeExpired();

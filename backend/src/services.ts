@@ -4,21 +4,22 @@ import { CredentialStore } from './auth/credentials.ts';
 import { LoginRateLimiter } from './auth/rate-limiter.ts';
 import { SessionStore } from './auth/session-store.ts';
 import type { AppConfig } from './config.ts';
-import type { Db } from './db/client.ts';
+import type { DbHandle } from './db/client.ts';
 import type { AppServices } from './types.ts';
 
 export function createServices(
   config: AppConfig,
   logger: Logger,
-  db: Db,
+  handle: DbHandle,
   overrides: Partial<AppServices> = {},
 ): AppServices {
   return {
     config,
     logger,
-    db,
-    sessions: new SessionStore(db),
-    credentials: new CredentialStore(db),
+    db: handle.db,
+    handle,
+    sessions: new SessionStore(handle.db),
+    credentials: new CredentialStore(handle.db),
     loginLimiter: new LoginRateLimiter(),
     modules: moduleRegistry,
     ...overrides,

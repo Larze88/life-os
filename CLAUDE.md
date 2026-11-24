@@ -6,7 +6,7 @@ Life OS ist eine private Single-User-PWA zum Alltags-Tracking (React/Vite/Tailwi
 
 ## Projektstand
 
-Phase 1 und 2 abgeschlossen, erstes Modul **Wasser** fertig (Vorlage für weitere Module: `shared/src/modules/water`, `frontend/src/modules/water`). Nächster Schritt: Phase 3a – Stimmung, Gewohnheiten, Schlaf.
+Phase 1 und 2 abgeschlossen, erstes Modul **Wasser** fertig (Vorlage für weitere Module: `shared/src/modules/water`, `frontend/src/modules/water`). Phase 5 (Pi-Deployment) ist vorgezogen und technisch fertig: Image, Release-Workflow, HA-App-Definition, Backup/Restore. Danach: Phase 3a – Stimmung, Gewohnheiten, Schlaf.
 
 ## Befehle
 
@@ -37,6 +37,15 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 - Backend-Tests nutzen `createTestContext()` aus `backend/src/test/test-app.ts` (In-Memory-SQLite mit echten Migrationen).
 - Frontend-Tests mocken `fetch` mit `mockApi()` (`frontend/src/test/mock-api.ts`, Wildcards wie `GET /api/v1/days/*`) und rendern die komplette App über `renderApp()` aus `frontend/src/test/render.tsx`.
 - Backend-Tests für geschützte Routen: `signedIn(ctx)` liefert ein Sitzungscookie. Der Seed läuft im Testkontext automatisch.
+
+## Release (neue Version auf den Pi bringen)
+
+1. Version in `package.json` **und** `deployment/home-assistant/app/lifeos/config.yaml` gleich erhöhen (SemVer).
+2. Committen, auf `main` pushen, Tag `v<version>` pushen → `release.yml` baut `ghcr.io/larze88/lifeos-aarch64:<version>`.
+3. Den Inhalt von `deployment/home-assistant/app/` in das öffentliche Repo `Larze88/life-os-ha` übernehmen (dort ändert sich v. a. `version`). Home Assistant zeigt dann das Update an.
+4. Datenbank-Änderungen sind sicher: Migration beim Start mit vorherigem Snapshot.
+
+Docker-Builds in der Cloud-Sandbox: Proxy-Zertifikat nur in einer temporären Dockerfile-Kopie einbinden, nie ins Repository.
 
 ## Nicht verhandelbare Regeln
 

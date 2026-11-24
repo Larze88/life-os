@@ -93,6 +93,20 @@ export const de = {
     reachable: 'erreichbar',
     unreachable: 'nicht erreichbar',
   },
+  backup: {
+    title: 'Datensicherung',
+    description:
+      'Lade regelmäßig ein Backup herunter – es schützt deine Daten, falls die Speicherkarte des Raspberry Pi ausfällt.',
+    lastDownload: 'Letztes Backup',
+    never: 'noch nie',
+    download: 'Backup herunterladen',
+    downloadHint: 'Die Datei enthält alle deine Daten unverschlüsselt. Bewahre sie sicher auf.',
+    restore: 'Backup wiederherstellen …',
+    restoreConfirm:
+      'Alle aktuellen Daten werden durch das Backup ersetzt (der aktuelle Stand wird vorher auf dem Server gesichert). Auch das Passwort wird auf das des Backups zurückgesetzt. Fortfahren?',
+    restored: 'Backup wiederhergestellt.',
+    reminder: 'Seit über 14 Tagen kein Backup heruntergeladen. Jetzt sichern →',
+  },
   common: {
     loading: 'Lädt …',
     retry: 'Erneut versuchen',

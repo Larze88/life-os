@@ -9,7 +9,7 @@ interface Journal {
   entries: { idx: number; tag: string }[];
 }
 
-function countMigrationFiles(migrationsDir: string): number {
+export function countMigrationFiles(migrationsDir: string): number {
   const journalFile = path.join(migrationsDir, 'meta', '_journal.json');
   const journal = JSON.parse(fs.readFileSync(journalFile, 'utf8')) as Journal;
   return journal.entries.length;

@@ -1,6 +1,5 @@
 import { and, asc, eq, gte, isNull, lte } from 'drizzle-orm';
-import type {
-  entryUpsertSchema} from '@lifeos/shared';
+import type { entryUpsertSchema } from '@lifeos/shared';
 import {
   addDays,
   computeLocalDate,

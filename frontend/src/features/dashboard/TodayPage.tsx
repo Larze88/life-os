@@ -7,6 +7,7 @@ import { useDay, useToday } from '@/features/tracking/tracking-api';
 import { de } from '@/lib/i18n/de';
 import { cn } from '@/lib/utils';
 import { getWidgetComponent } from '@/modules/registry';
+import { BackupReminder } from './BackupReminder';
 import { DayNavigator } from './DayNavigator';
 
 function greeting(hour: number): string {
@@ -35,6 +36,7 @@ export function TodayPage() {
         <DayNavigator date={date} today={today} onChange={setDate} />
       </div>
 
+      {date === today && <BackupReminder />}
       {day.isPending && <WidgetSkeleton />}
       {day.isError && (
         <Card className="items-center text-center">

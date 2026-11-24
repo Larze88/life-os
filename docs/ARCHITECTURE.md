@@ -194,7 +194,7 @@ Service Worker und Installation erfordern einen **Secure Context** (HTTPS oder `
 ## 9. Deployment (Zielbild, Detailprüfung in Phase 5)
 
 1. **Build**: GitHub Actions baut ein Multi-Arch-Image (`linux/arm64`, `linux/amd64`) und legt es in GHCR ab. Kein Kompilieren auf dem Pi (schont microSD und CPU).
-2. **Bereitstellung**: Eigenes **HA-App-Repository** (Custom Add-on Repository) mit `config.yaml` (`image: ghcr.io/<user>/lifeos-{arch}`, `arch: [aarch64, amd64]`). Installation über die HA-Oberfläche, Updates per Klick.
+2. **Bereitstellung**: Öffentliches **HA-App-Repository** `life-os-ha` (Quelle: `deployment/home-assistant/app/`) mit `config.yaml` (`image: ghcr.io/larze88/lifeos-{arch}`, `arch: [aarch64]`). Installation über die HA-Oberfläche, Updates per Klick (ADR-024 bis ADR-026). Anleitung: `deployment/home-assistant/README.md`.
 3. **Persistenz**: `/data` der App → SQLite, Backups, Tailscale-State.
 4. **HTTPS/Zugriff**: Die App startet einen eigenen `tailscaled` (userspace networking) als **separaten Tailnet-Knoten** `lifeos` und veröffentlicht den Node-Server mit `tailscale serve` unter `https://lifeos.<tailnet>.ts.net` (echtes Let's-Encrypt-Zertifikat über Tailscale). Begründung und Alternativen: [FEASIBILITY.md](FEASIBILITY.md#4-pwa-https-und-tailscale).
 5. **Lokal (Windows)**: `npm run dev` mit nativ installiertem Node.js 24 (Vite + API auf `localhost`, dort funktionieren Service Worker auch ohne HTTPS). Docker ist für die Entwicklung **nicht** nötig; das Produktiv-Image baut GitHub Actions. `docker compose` bleibt optional.

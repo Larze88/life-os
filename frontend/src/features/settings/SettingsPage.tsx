@@ -12,6 +12,7 @@ import { ApiError, api } from '@/lib/api';
 import { formatDateTime } from '@/lib/format';
 import { de } from '@/lib/i18n/de';
 import { queryKeys } from '@/lib/query-keys';
+import { BackupSection } from './BackupSection';
 import { useChangePassword, useLogout, useRevokeSession, useSessions } from '../auth/auth-api';
 
 export function SettingsPage() {
@@ -26,6 +27,9 @@ export function SettingsPage() {
             <LogOut /> {de.auth.logout}
           </Button>
         </Section>
+        <Section id="datensicherung" title={de.backup.title} description={de.backup.description}>
+          <BackupSection />
+        </Section>
         <Section title={de.settings.devices} description={de.settings.devicesHint}>
           <SessionList />
         </Section>
@@ -38,16 +42,18 @@ export function SettingsPage() {
 }
 
 function Section({
+  id,
   title,
   description,
   children,
 }: {
+  id?: string;
   title: string;
   description?: string;
   children: React.ReactNode;
 }) {
   return (
-    <Card>
+    <Card id={id} className="scroll-mt-6">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}

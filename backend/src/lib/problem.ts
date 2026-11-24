@@ -21,6 +21,7 @@ export class HttpProblem extends Error {
     } = {},
   ) {
     super(title);
+    this.name = 'HttpProblem';
     this.status = status;
     this.title = title;
     this.detail = options.detail;

@@ -114,3 +114,14 @@ export const daySummarySchema = z.object({
   widgets: z.array(widgetSchema),
 });
 export type DaySummary = z.infer<typeof daySummarySchema>;
+
+export const backupStatusSchema = z.object({
+  /** Last time a backup was downloaded (UTC ISO), null if never. */
+  lastDownloadAt: z.string().nullable(),
+  /** Oldest existing entry (UTC ISO), to decide whether a reminder makes sense. */
+  firstEntryAt: z.string().nullable(),
+});
+export type BackupStatus = z.infer<typeof backupStatusSchema>;
+
+/** Days without a downloaded backup before the dashboard shows a reminder (ADR-013). */
+export const BACKUP_REMINDER_DAYS = 14;

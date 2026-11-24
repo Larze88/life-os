@@ -39,7 +39,7 @@ export async function createTestContext(
   };
   const handle = openDatabase(':memory:');
   await runMigrations(handle, { migrationsDir: config.migrationsDir });
-  const services = createServices(config, pino({ level: 'silent' }), handle.db, {
+  const services = createServices(config, pino({ level: 'silent' }), handle, {
     credentials: new CredentialStore(handle.db, FAST_HASH),
     loginLimiter: new LoginRateLimiter(),
   });

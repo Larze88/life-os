@@ -6,6 +6,7 @@ import { staticFiles } from './lib/static-files.ts';
 import { originCheck } from './middleware/origin-check.ts';
 import { requestLog } from './middleware/request-log.ts';
 import { authRoutes } from './routes/auth.ts';
+import { backupRoutes } from './routes/backups.ts';
 import { healthRoutes } from './routes/health.ts';
 import { dayRoutes, entryRoutes, settingsRoutes, trackerRoutes } from './routes/tracking.ts';
 import type { AppEnv, AppServices } from './types.ts';
@@ -48,7 +49,8 @@ export function createApp(services: AppServices) {
     .route('/settings', settingsRoutes)
     .route('/trackers', trackerRoutes)
     .route('/entries', entryRoutes)
-    .route('/days', dayRoutes);
+    .route('/days', dayRoutes)
+    .route('/backups', backupRoutes);
 
   app.route(API_PREFIX, api);
   app.all(`${API_PREFIX}/*`, () => {

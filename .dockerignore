@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/dev-dist
+**/coverage
+database/data
+**/*.db
+**/*.db-wal
+**/*.db-shm
+.git
+.github
+docs
+**/*.log
+.env*

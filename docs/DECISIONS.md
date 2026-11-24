@@ -121,3 +121,23 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 **Kontext:** Die App soll hauptsächlich auf dem Handy genutzt werden.
 **Entscheidung:** Sofort-Lösung: `tailscale serve` auf dem Windows-PC vor dem lokalen Produktions-Build (gleicher Mechanismus wie später auf dem Pi, ADR-007). Das Pi-Deployment (Phase 5) wird vor die weiteren Module gezogen.
 **Konsequenz:** Daten, die bis dahin auf dem PC entstehen, werden per Backup-Download/Restore auf den Pi übertragen. Die Restore-Funktion wird deshalb mit dem Deployment gebaut.
+
+## ADR-024 · Öffentliches Container-Image (2026-11-24)
+
+**Kontext:** Home Assistant muss das Image laden können. Private GHCR-Images bräuchten ein GitHub-Token in Home Assistant.
+**Entscheidung:** Das Image `ghcr.io/larze88/lifeos-aarch64` ist öffentlich.
+**Konsequenz:** Der Programmcode ist damit einsehbar, Daten nie (die liegen nur in `/data` auf dem Pi). Alternative bei Bedarf: Image privat und in Home Assistant unter App-Store → ⋮ → Registries ein GitHub-Token (`read:packages`) hinterlegen.
+
+## ADR-025 · App-Definition in separatem öffentlichem Repository (2026-11-24)
+
+**Entscheidung:** Home Assistant liest App-Repositories per Git; das Hauptrepository bleibt privat. Die App-Definition (`repository.yaml`, `lifeos/config.yaml`, Doku, Icons) liegt daher zusätzlich im öffentlichen Repo `life-os-ha`. Quelle der Wahrheit bleibt `deployment/home-assistant/app/` im Hauptrepository.
+
+## ADR-026 · Nur arm64, Image ohne RUN in der Endstufe (2026-11-24)
+
+**Entscheidung:** Es wird nur `linux/arm64` (Raspberry Pi 4) gebaut. JavaScript und `node_modules` entstehen auf der Build-Plattform; better-sqlite3 bringt Binärdateien für alle Plattformen mit (`npm ci --ignore-scripts`). Die Endstufe kopiert nur Dateien.
+**Konsequenz:** Schneller, emulationsfreier Build. Eine amd64-Variante wäre nur eine zusätzliche Plattform in `release.yml`.
+
+## ADR-027 · Wiederherstellung per Daten-Austausch in einer Transaktion (2026-11-24)
+
+**Entscheidung:** Ein hochgeladenes Backup wird in einer temporären Kopie geprüft (`quick_check`, Tabellen, Schema-Version) und auf das aktuelle Schema migriert. Danach wird ein Snapshot des aktuellen Stands angelegt, und alle Daten-Tabellen werden per `ATTACH` in einer Transaktion ersetzt. Sitzungen werden nicht übernommen, das wiederherstellende Gerät bleibt angemeldet.
+**Begründung:** Kein Austausch der Datenbankdatei im laufenden Betrieb nötig; Fehler hinterlassen den alten Stand unverändert.

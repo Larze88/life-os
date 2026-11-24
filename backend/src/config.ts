@@ -32,7 +32,8 @@ export interface AppConfig {
   version: string;
 }
 
-export const APP_VERSION = '0.1.0';
+/** Set by the container build (LIFEOS_VERSION); falls back for local development. */
+export const APP_VERSION = process.env.LIFEOS_VERSION ?? '0.1.0-dev';
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const parsed = envSchema.safeParse(env);
