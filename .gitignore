@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+# Persönliche Daten – niemals committen
+database/data/
+*.db
+*.db-wal
+*.db-shm
+backups/
+*.log
+.DS_Store
