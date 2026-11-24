@@ -6,7 +6,7 @@
 - [x] PRD, Architektur, Datenmodell, Machbarkeitsprüfung, ADR-Log, Roadmap, CLAUDE.md
 - [x] Projektstruktur angelegt
 - [x] Offene Fragen geklärt (siehe unten)
-- [ ] Umzug in eigenes privates Repository `life-os`
+- [x] Umzug in eigenes privates Repository `life-os`
 
 ## Phase 1 – Technisches Grundgerüst
 **Ziel:** Leere, aber vollständige App: anmelden, navigieren, als PWA installieren, Daten landen in SQLite.
