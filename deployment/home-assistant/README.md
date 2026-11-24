@@ -1,4 +1,5 @@
 # Home-Assistant-App (früher „Add-on“)
+
 Hier entsteht in Phase 5 das App-Repository für Home Assistant OS:
 
 ```

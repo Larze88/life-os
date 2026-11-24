@@ -12,3 +12,5 @@ database/data/
 backups/
 *.log
 .DS_Store
+dev-dist/
+*.tsbuildinfo

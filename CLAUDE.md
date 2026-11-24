@@ -5,26 +5,40 @@ Life OS ist eine private Single-User-PWA zum Alltags-Tracking (React/Vite/Tailwi
 **Vor jeder größeren Änderung lesen:** `docs/ARCHITECTURE.md`, `docs/DATA_MODEL.md`, `docs/DECISIONS.md`. Aktueller Fortschritt: `docs/ROADMAP.md`.
 
 ## Projektstand
-Phase 0 abgeschlossen (nur Dokumentation). Code-Gerüst entsteht in Phase 1. Befehle unten werden in Phase 1 eingerichtet – bei Abweichungen diesen Abschnitt aktualisieren.
 
-## Befehle (ab Phase 1)
+Phase 1 abgeschlossen: Monorepo (npm Workspaces), Auth, Navigation, PWA, DB-Schema + erste Migration, Tests. Modul-Registries existieren, sind aber noch leer. Nächster Schritt: Phase 2 (Dashboard).
+
+## Befehle
+
 ```bash
 npm install                 # alle Workspaces
 npm run dev                 # Backend (:8080) + Vite (:5173, Proxy auf /api)
 npm test                    # Vitest in allen Paketen
 npm run typecheck
 npm run lint
-npm run db:generate         # Drizzle-Migration aus Schema-Änderung erzeugen
+npm run check               # typecheck + lint + test (vor jedem Commit)
+npm run build
+npm run db:generate -- --name=<name>   # Drizzle-Migration aus Schema-Änderung erzeugen
 npm run db:migrate          # Migrationen lokal anwenden
 docker compose -f deployment/docker/docker-compose.yml up --build   # optional, Docker nicht vorausgesetzt
 ```
 
 ## Entwicklungsumgebung
+
 - Entwickelt wird unter **Windows ohne Docker** (Node.js 24 nativ). Alle npm-Scripts müssen unter Windows (PowerShell) laufen: keine Bash-Syntax in `package.json`, Hilfsskripte als Node-Scripts, Pfade über `node:path`.
 - Docker-Images (arm64/amd64) baut nur GitHub Actions.
 - Zielgerät ist **Android/Chrome** – UI-Tests und PWA-Prüfungen darauf ausrichten.
 
+## Wichtige Versionen / Fallstricke
+
+- **TypeScript ist auf 6.0 gepinnt**, weil typescript-eslint TS 7 noch nicht unterstützt (ADR-016).
+- **React Router 8** (Library-Modus, `createBrowserRouter` aus `react-router`), **Zod 4**, **Vite 8**, **Vitest 5**, **Tailwind 4** (CSS-Konfiguration in `frontend/src/styles/index.css`, keine `tailwind.config`).
+- `@lifeos/shared` wird **nicht gebaut**: Importe zeigen auf TS-Quellen, relative Importe mit `.ts`-Endung. Das Backend wird mit tsup gebündelt.
+- Backend-Tests nutzen `createTestContext()` aus `backend/src/test/test-app.ts` (In-Memory-SQLite mit echten Migrationen).
+- Frontend-Tests mocken `fetch` und rendern die komplette App über `renderApp()` aus `frontend/src/test/render.tsx`.
+
 ## Nicht verhandelbare Regeln
+
 1. **Keine sensiblen Daten in Logs** – keine Request-Bodies, Eintragsinhalte, Notizen, Tokens, Cookies.
 2. **Keine externen Requests** zur Laufzeit (keine CDNs, Fonts, Analytics, Telemetrie). Neue Abhängigkeiten nur mit Begründung.
 3. **Migrationen nur vorwärts.** Angewendete Migrationen nie ändern. Schemaänderung = `src/db/schema.ts` anpassen + `npm run db:generate` + generierte SQL committen.
@@ -37,6 +51,7 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 10. Daten (`database/data/`, `*.db`, Backups, `.env`) niemals committen.
 
 ## Konventionen
+
 - TypeScript `strict`, kein `any` ohne Kommentar. ES-Module.
 - Code, Bezeichner, Commits: Englisch. UI-Texte: Deutsch, zentral in `frontend/src/lib/i18n/de.ts`. Doku: Deutsch.
 - Dateinamen `kebab-case.ts`, React-Komponenten `PascalCase.tsx`.
@@ -46,6 +61,7 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 - Commits klein und thematisch (`feat(water): add quick amounts`).
 
 ## Neues Modul hinzufügen
+
 1. `shared/src/modules/<id>/definition.ts` – `ModuleDefinition` (configSchema, dataSchema, fields, entryKind, primaryValue, defaultTrackers); in `shared/src/modules/registry.ts` eintragen.
 2. Optional `backend/src/modules/<id>/` für spezielle Auswertungen; in `backend/src/modules/registry.ts` eintragen.
 3. `frontend/src/modules/<id>/` – `Widget`, `QuickActions`, optional `EntryForm` (sonst generisches Formular), `DetailView`; in `frontend/src/modules/registry.ts` eintragen.
@@ -54,6 +70,7 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 6. `docs/DATA_MODEL.md` (Payload-Tabelle) und `docs/ROADMAP.md` aktualisieren.
 
 ## Tests – Mindestumfang
+
 - Zod-Schemas aller Module, Upgrade-Funktionen
 - `local_date`-Berechnung inkl. Sommerzeit, Tagesgrenze, Schlaf über Mitternacht
 - Auth (Hashing, Sitzungsablauf, Rate-Limit, Origin-Check)
@@ -62,4 +79,5 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 - Export-Format
 
 ## Dokumentationspflicht
+
 Langfristig wirksame Entscheidungen → neuer Eintrag in `docs/DECISIONS.md`. Datenmodell-Änderungen → `docs/DATA_MODEL.md`. Abgeschlossene Schritte → `docs/ROADMAP.md` abhaken.

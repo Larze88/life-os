@@ -1,2 +1,3 @@
 # Docker
-Multi-Stage-Dockerfile (Debian slim, Node 24) und `docker-compose.yml` für produktionsnahe lokale Tests. Entsteht in Phase 1 (Compose) bzw. Phase 5 (Multi-Arch-Build).
+
+Multi-Stage-Dockerfile (Debian slim, Node 24) und optional `docker-compose.yml`. Entsteht in Phase 5 zusammen mit dem Multi-Arch-Build in GitHub Actions (lokal ist Docker nicht nötig, ADR-014).

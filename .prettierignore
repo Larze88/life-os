@@ -1,0 +1,5 @@
+dist
+dev-dist
+coverage
+database/migrations
+package-lock.json

@@ -14,61 +14,67 @@
 ## 2. Tabellen
 
 ### `settings`
-| Spalte | Typ | Hinweis |
-|---|---|---|
-| `key` | TEXT PK | z. B. `timezone`, `day_start_time`, `week_start` |
-| `value` | TEXT (JSON) | Zod-validiert pro Key |
-| `updated_at` | TEXT | |
+
+| Spalte       | Typ         | Hinweis                                          |
+| ------------ | ----------- | ------------------------------------------------ |
+| `key`        | TEXT PK     | z. B. `timezone`, `day_start_time`, `week_start` |
+| `value`      | TEXT (JSON) | Zod-validiert pro Key                            |
+| `updated_at` | TEXT        |                                                  |
 
 Standardwerte: `timezone = Europe/Berlin`, `day_start_time = 00:00`, `week_start = monday`.
 
 ### `auth_credentials`
-| Spalte | Typ | Hinweis |
-|---|---|---|
-| `id` | INTEGER PK | immer `1` (Single-User) |
-| `password_hash` | TEXT | `scrypt$N$r$p$salt$hash` |
-| `updated_at` | TEXT | |
+
+| Spalte          | Typ        | Hinweis                  |
+| --------------- | ---------- | ------------------------ |
+| `id`            | INTEGER PK | immer `1` (Single-User)  |
+| `password_hash` | TEXT       | `scrypt$N$r$p$salt$hash` |
+| `updated_at`    | TEXT       |                          |
 
 ### `sessions`
-| Spalte | Typ | Hinweis |
-|---|---|---|
-| `id` | TEXT PK | SHA-256 des Tokens (Token selbst nie gespeichert) |
-| `created_at`, `last_seen_at`, `expires_at` | TEXT | gleitende Laufzeit |
-| `device_label` | TEXT NULL | grob aus User-Agent („iPhone · Safari“) |
+
+| Spalte                                     | Typ       | Hinweis                                           |
+| ------------------------------------------ | --------- | ------------------------------------------------- |
+| `id`                                       | TEXT PK   | SHA-256 des Tokens (Token selbst nie gespeichert) |
+| `created_at`, `last_seen_at`, `expires_at` | TEXT      | gleitende Laufzeit                                |
+| `device_label`                             | TEXT NULL | grob aus User-Agent („iPhone · Safari“)           |
 
 ### `trackers`
-| Spalte | Typ | Hinweis |
-|---|---|---|
-| `id` | TEXT PK | UUIDv7 |
-| `key` | TEXT UNIQUE | stabiler Slug, z. B. `water`, `weight`, `habit-meditation`; **unveränderlich** |
-| `module` | TEXT | Modul-ID aus der Registry (`water`, `sleep`, `mood`, `habit`, `activity`, `meal`, `measurement`, `symptom`, `focus`, `custom`) |
-| `name` | TEXT | Anzeigename (änderbar) |
-| `icon`, `color` | TEXT NULL | |
-| `config` | TEXT (JSON) | validiert mit `module.configSchema` |
-| `config_version` | INTEGER | |
-| `sort_order` | INTEGER | |
-| `archived_at` | TEXT NULL | Archiv statt Löschen |
-| `created_at`, `updated_at` | TEXT | |
+
+| Spalte                     | Typ         | Hinweis                                                                                                                        |
+| -------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `id`                       | TEXT PK     | UUIDv7                                                                                                                         |
+| `key`                      | TEXT UNIQUE | stabiler Slug, z. B. `water`, `weight`, `habit-meditation`; **unveränderlich**                                                 |
+| `module`                   | TEXT        | Modul-ID aus der Registry (`water`, `sleep`, `mood`, `habit`, `activity`, `meal`, `measurement`, `symptom`, `focus`, `custom`) |
+| `name`                     | TEXT        | Anzeigename (änderbar)                                                                                                         |
+| `icon`, `color`            | TEXT NULL   |                                                                                                                                |
+| `config`                   | TEXT (JSON) | validiert mit `module.configSchema`                                                                                            |
+| `config_version`           | INTEGER     |                                                                                                                                |
+| `sort_order`               | INTEGER     |                                                                                                                                |
+| `archived_at`              | TEXT NULL   | Archiv statt Löschen                                                                                                           |
+| `created_at`, `updated_at` | TEXT        |                                                                                                                                |
 
 ### `entries` (zentrale Tabelle)
-| Spalte | Typ | Hinweis |
-|---|---|---|
-| `id` | TEXT PK | UUIDv7 vom Client |
-| `tracker_id` | TEXT FK → trackers | |
-| `occurred_at` | TEXT | UTC; bei Zeiträumen der Start |
-| `ends_at` | TEXT NULL | UTC; nur bei `entryKind = span` (Schlaf, Sport, Fokus) |
-| `local_date` | TEXT | logischer Tag `YYYY-MM-DD` (Server berechnet, Regeln s. u.) |
-| `tz_offset_min` | INTEGER | Offset bei Erfassung, z. B. `60` |
-| `value` | REAL NULL | **Hauptwert** für generische Aggregation (ml, Minuten, Skalenwert, kg …) |
-| `data` | TEXT (JSON) | modul-spezifischer Payload, validiert mit `module.dataSchema` |
-| `data_version` | INTEGER | Version des Payload-Schemas |
-| `note` | TEXT NULL | Freitext |
-| `source` | TEXT | `manual`, `quick_action`, `import`, später `home_assistant`, `health_connect` … |
-| `source_ref` | TEXT NULL | externe ID zur Deduplizierung |
-| `created_at`, `updated_at` | TEXT | |
-| `deleted_at` | TEXT NULL | Soft Delete (wichtig für spätere Sync) |
+
+| Spalte                     | Typ                | Hinweis                                                                         |
+| -------------------------- | ------------------ | ------------------------------------------------------------------------------- |
+| `id`                       | TEXT PK            | UUIDv7 vom Client                                                               |
+| `tracker_id`               | TEXT FK → trackers |                                                                                 |
+| `occurred_at`              | TEXT               | UTC; bei Zeiträumen der Start                                                   |
+| `ends_at`                  | TEXT NULL          | UTC; nur bei `entryKind = span` (Schlaf, Sport, Fokus)                          |
+| `local_date`               | TEXT               | logischer Tag `YYYY-MM-DD` (Server berechnet, Regeln s. u.)                     |
+| `tz_offset_min`            | INTEGER            | Offset bei Erfassung, z. B. `60`                                                |
+| `value`                    | REAL NULL          | **Hauptwert** für generische Aggregation (ml, Minuten, Skalenwert, kg …)        |
+| `data`                     | TEXT (JSON)        | modul-spezifischer Payload, validiert mit `module.dataSchema`                   |
+| `data_version`             | INTEGER            | Version des Payload-Schemas                                                     |
+| `note`                     | TEXT NULL          | Freitext                                                                        |
+| `source`                   | TEXT               | `manual`, `quick_action`, `import`, später `home_assistant`, `health_connect` … |
+| `source_ref`               | TEXT NULL          | externe ID zur Deduplizierung                                                   |
+| `created_at`, `updated_at` | TEXT               |                                                                                 |
+| `deleted_at`               | TEXT NULL          | Soft Delete (wichtig für spätere Sync)                                          |
 
 Indizes:
+
 - `(tracker_id, local_date)` – Tages-/Zeitraumabfragen pro Tracker
 - `(local_date)` – Tagesübersicht
 - `(tracker_id, occurred_at)` – Verläufe
@@ -76,32 +82,35 @@ Indizes:
 - bei Bedarf Ausdrucksindizes auf `json_extract(data, '$.…')` (z. B. Symptomname)
 
 ### `goals`
+
 Ziele sind **zeitlich gültig**, damit eine Zieländerung vergangene Tage nicht umbewertet.
 
-| Spalte | Typ | Hinweis |
-|---|---|---|
-| `id` | TEXT PK | |
-| `tracker_id` | TEXT FK | |
-| `metric` | TEXT | `sum`, `count`, `avg`, `last`, `duration` |
-| `period` | TEXT | `day`, `week`, `month` |
-| `comparator` | TEXT | `gte`, `lte`, `between` |
-| `target`, `target_max` | REAL / REAL NULL | |
-| `valid_from` | TEXT | `local_date` |
-| `valid_to` | TEXT NULL | `NULL` = aktuell gültig |
+| Spalte                 | Typ              | Hinweis                                   |
+| ---------------------- | ---------------- | ----------------------------------------- |
+| `id`                   | TEXT PK          |                                           |
+| `tracker_id`           | TEXT FK          |                                           |
+| `metric`               | TEXT             | `sum`, `count`, `avg`, `last`, `duration` |
+| `period`               | TEXT             | `day`, `week`, `month`                    |
+| `comparator`           | TEXT             | `gte`, `lte`, `between`                   |
+| `target`, `target_max` | REAL / REAL NULL |                                           |
+| `valid_from`           | TEXT             | `local_date`                              |
+| `valid_to`             | TEXT NULL        | `NULL` = aktuell gültig                   |
 
 Beispiele: Wasser `sum ≥ 2000 / day`; Gewohnheit „Sport“ `count ≥ 3 / week`; Schlaf `duration between 420–540 / day`.
 
 ### `dashboard_widgets`
-| Spalte | Typ | Hinweis |
-|---|---|---|
-| `id` | TEXT PK | |
-| `widget_type` | TEXT | z. B. `water.progress`, `sleep.last_night`, `habits.today`, `overview.week` |
-| `tracker_id` | TEXT NULL | falls trackergebunden |
-| `position` | INTEGER | Reihenfolge |
-| `size` | TEXT | `sm`, `md`, `lg` |
-| `config` | TEXT (JSON) | widget-spezifisch |
+
+| Spalte        | Typ         | Hinweis                                                                     |
+| ------------- | ----------- | --------------------------------------------------------------------------- |
+| `id`          | TEXT PK     |                                                                             |
+| `widget_type` | TEXT        | z. B. `water.progress`, `sleep.last_night`, `habits.today`, `overview.week` |
+| `tracker_id`  | TEXT NULL   | falls trackergebunden                                                       |
+| `position`    | INTEGER     | Reihenfolge                                                                 |
+| `size`        | TEXT        | `sm`, `md`, `lg`                                                            |
+| `config`      | TEXT (JSON) | widget-spezifisch                                                           |
 
 ### Migrationstabelle
+
 Von Drizzle verwaltet (`__drizzle_migrations`).
 
 ## 3. Logischer Tag (`local_date`)
@@ -112,18 +121,18 @@ Von Drizzle verwaltet (`__drizzle_migrations`).
 
 ## 4. Modul-Payloads (`data`) und Hauptwert (`value`)
 
-| Modul | Art | `value` | `data` (Auszug) |
-|---|---|---|---|
-| `water` | instant | Menge in ml | `{ beverage?: 'water'│'tea'│… }` |
-| `sleep` | span (Tag = Ende) | Dauer in Minuten | `{ quality: 1–5, rested?: 1–5, latencyMin?, awakenings? }` |
-| `mood` | instant | Stimmung 1–5 | `{ energy?: 1–5, stress?: 1–5, wellbeing?: 1–5, tags?: string[] }` |
-| `habit` | instant | Anzahl (meist 1) | `{}` |
-| `activity` | span oder Dauer | Dauer in Minuten | `{ type: string, intensity: 1–3, distanceKm?, rpe?: 1–10 }` |
-| `meal` | instant | `NULL` | `{ mealType: 'breakfast'│'lunch'│'dinner'│'snack', description?, tags?, satiety?: 1–5 }` |
-| `measurement` | instant | Messwert in Tracker-Einheit | `{ secondary?: number }` (z. B. diastolisch) |
-| `symptom` | instant | Intensität 0–10 | `{ symptom: string, location? }` |
-| `focus` | span oder Dauer | Dauer in Minuten | `{ concentration?: 1–5, productivity?: 1–5, task? }` |
-| `custom` | instant | Wert des `primaryField` | `{ [fieldKey]: value }` gemäß Feldliste in `trackers.config` |
+| Modul         | Art               | `value`                     | `data` (Auszug)                                                                          |
+| ------------- | ----------------- | --------------------------- | ---------------------------------------------------------------------------------------- |
+| `water`       | instant           | Menge in ml                 | `{ beverage?: 'water'│'tea'│… }`                                                         |
+| `sleep`       | span (Tag = Ende) | Dauer in Minuten            | `{ quality: 1–5, rested?: 1–5, latencyMin?, awakenings? }`                               |
+| `mood`        | instant           | Stimmung 1–5                | `{ energy?: 1–5, stress?: 1–5, wellbeing?: 1–5, tags?: string[] }`                       |
+| `habit`       | instant           | Anzahl (meist 1)            | `{}`                                                                                     |
+| `activity`    | span oder Dauer   | Dauer in Minuten            | `{ type: string, intensity: 1–3, distanceKm?, rpe?: 1–10 }`                              |
+| `meal`        | instant           | `NULL`                      | `{ mealType: 'breakfast'│'lunch'│'dinner'│'snack', description?, tags?, satiety?: 1–5 }` |
+| `measurement` | instant           | Messwert in Tracker-Einheit | `{ secondary?: number }` (z. B. diastolisch)                                             |
+| `symptom`     | instant           | Intensität 0–10             | `{ symptom: string, location? }`                                                         |
+| `focus`       | span oder Dauer   | Dauer in Minuten            | `{ concentration?: 1–5, productivity?: 1–5, task? }`                                     |
+| `custom`      | instant           | Wert des `primaryField`     | `{ [fieldKey]: value }` gemäß Feldliste in `trackers.config`                             |
 
 ### Tracker-Konfiguration (`config`) – Beispiele
 
@@ -155,17 +164,17 @@ Von Drizzle verwaltet (`__drizzle_migrations`).
 
 Gemeinsam genutzt von eingebauten Modulen und eigenen Trackern; das Frontend rendert daraus Formulare, das Backend erzeugt daraus Zod-Schemas.
 
-| Typ | Optionen | Speicherung |
-|---|---|---|
-| `number` | `min`, `max`, `step`, `unit` | number |
-| `scale` | `min`, `max`, `labels?`, `emoji?` | integer |
-| `boolean` | – | boolean |
-| `select` | `options` | string |
-| `multiselect` | `options` | string[] |
-| `text` | `maxLength`, `multiline` | string |
-| `date` | – | `YYYY-MM-DD` |
-| `time` | – | `HH:mm` |
-| `duration` | `unit: 'min'` | number (Minuten) |
+| Typ           | Optionen                          | Speicherung      |
+| ------------- | --------------------------------- | ---------------- |
+| `number`      | `min`, `max`, `step`, `unit`      | number           |
+| `scale`       | `min`, `max`, `labels?`, `emoji?` | integer          |
+| `boolean`     | –                                 | boolean          |
+| `select`      | `options`                         | string           |
+| `multiselect` | `options`                         | string[]         |
+| `text`        | `maxLength`, `multiline`          | string           |
+| `date`        | –                                 | `YYYY-MM-DD`     |
+| `time`        | –                                 | `HH:mm`          |
+| `duration`    | `unit: 'min'`                     | number (Minuten) |
 
 Gemeinsame Optionen: `key` (unveränderlich), `label`, `required`, `help`, `deprecated` (ausblenden statt löschen).
 

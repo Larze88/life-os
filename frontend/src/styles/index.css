@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/*
+ * Design tokens (docs/PRD.md §7): calm, Apple-Health-like surfaces, one accent per module.
+ * System font stack — no external font requests (CLAUDE.md rule 2).
+ */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 1rem;
+
+  --background: oklch(0.973 0.002 286);
+  --foreground: oklch(0.21 0.006 286);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.21 0.006 286);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.94 0.003 286);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.94 0.003 286);
+  --muted-foreground: oklch(0.5 0.01 286);
+  --accent: oklch(0.94 0.003 286);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.58 0.22 27);
+  --border: oklch(0.91 0.004 286);
+  --input: oklch(0.88 0.004 286);
+  --ring: oklch(0.6 0.15 250);
+
+  /* Module accents */
+  --module-water: oklch(0.65 0.15 235);
+  --module-sleep: oklch(0.55 0.16 280);
+  --module-mood: oklch(0.78 0.15 75);
+  --module-habit: oklch(0.68 0.16 150);
+  --module-activity: oklch(0.68 0.19 40);
+  --module-meal: oklch(0.7 0.15 125);
+  --module-measurement: oklch(0.62 0.12 200);
+  --module-symptom: oklch(0.62 0.18 15);
+  --module-focus: oklch(0.6 0.17 305);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.12 0 0);
+    --foreground: oklch(0.97 0 0);
+    --card: oklch(0.19 0.003 286);
+    --popover: oklch(0.19 0.003 286);
+    --primary: oklch(0.97 0 0);
+    --primary-foreground: oklch(0.19 0.003 286);
+    --secondary: oklch(0.26 0.004 286);
+    --muted: oklch(0.26 0.004 286);
+    --muted-foreground: oklch(0.7 0.01 286);
+    --accent: oklch(0.26 0.004 286);
+    --border: oklch(0.28 0.004 286);
+    --input: oklch(0.32 0.004 286);
+  }
+}
+
+@theme inline {
+  --font-sans:
+    system-ui, -apple-system, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-water: var(--module-water);
+  --color-sleep: var(--module-sleep);
+  --color-mood: var(--module-mood);
+  --color-habit: var(--module-habit);
+  --color-activity: var(--module-activity);
+  --color-meal: var(--module-meal);
+  --color-measurement: var(--module-measurement);
+  --color-symptom: var(--module-symptom);
+  --color-focus: var(--module-focus);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    overscroll-behavior-y: none;
+  }
+}

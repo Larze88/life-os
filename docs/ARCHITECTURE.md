@@ -28,27 +28,27 @@
 
 ## 2. Technologie-Stack
 
-| Schicht | Wahl | Begründung |
-|---|---|---|
-| Runtime | **Node.js 24 LTS** | Aktuelle LTS, ARM64 offiziell unterstützt |
-| Sprache | **TypeScript (strict)** überall | Gemeinsame Typen Frontend/Backend |
-| Monorepo | **npm Workspaces** (`shared`, `backend`, `frontend`) | Keine zusätzliche Tooling-Abhängigkeit (pnpm/turbo unnötig bei 3 Paketen) |
-| Validierung | **Zod** (in `shared`) | Eine Schemaquelle für API, Formulare und DB-JSON |
-| Backend-Framework | **Hono** + `@hono/node-server` | Klein, schnell, Web-Standards, gute TS-Typen, Zod-Validator |
-| Datenbank | **SQLite** via **better-sqlite3** | Synchron, sehr schnell, bewährt; Prebuilds für linux-arm64 |
-| ORM / Migrationen | **Drizzle ORM** + drizzle-kit | Typsichere Queries, SQL-nahe, generiert lesbare SQL-Migrationen |
-| Logging | **pino** mit Redaction | Strukturiert, ressourcenschonend |
-| Frontend | **React 19 + Vite** | Vorgabe; schnelle Builds |
-| Styling / UI | **Tailwind CSS v4 + shadcn/ui** (Radix) | Komponenten liegen im Repo, anpassbar, kein Laufzeit-Lock-in |
-| Routing | **React Router** (Library-Modus) | Verbreitet, ausreichend |
-| Server-State | **TanStack Query** | Caching, optimistische Updates, Persistenz für Offline-Lesen |
-| Formulare | **react-hook-form** + Zod-Resolver | Passt zu shadcn/ui-Formularen |
-| Diagramme | **Recharts** (über shadcn „Charts“) | Konsistentes Styling |
-| Datum/Zeit | **date-fns** (+ `@date-fns/tz`) | Modular, tree-shakeable |
-| Icons | **lucide-react** | Standard bei shadcn |
-| PWA | **vite-plugin-pwa** (Workbox) | Manifest + Service Worker |
-| Tests | **Vitest** (Unit/Integration), **Playwright** (E2E, später) | Einheitlich, schnell |
-| Container | Docker (Multi-Arch amd64/arm64), Docker Compose lokal | |
+| Schicht           | Wahl                                                        | Begründung                                                                |
+| ----------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Runtime           | **Node.js 24 LTS**                                          | Aktuelle LTS, ARM64 offiziell unterstützt                                 |
+| Sprache           | **TypeScript (strict)** überall                             | Gemeinsame Typen Frontend/Backend                                         |
+| Monorepo          | **npm Workspaces** (`shared`, `backend`, `frontend`)        | Keine zusätzliche Tooling-Abhängigkeit (pnpm/turbo unnötig bei 3 Paketen) |
+| Validierung       | **Zod** (in `shared`)                                       | Eine Schemaquelle für API, Formulare und DB-JSON                          |
+| Backend-Framework | **Hono** + `@hono/node-server`                              | Klein, schnell, Web-Standards, gute TS-Typen, Zod-Validator               |
+| Datenbank         | **SQLite** via **better-sqlite3**                           | Synchron, sehr schnell, bewährt; Prebuilds für linux-arm64                |
+| ORM / Migrationen | **Drizzle ORM** + drizzle-kit                               | Typsichere Queries, SQL-nahe, generiert lesbare SQL-Migrationen           |
+| Logging           | **pino** mit Redaction                                      | Strukturiert, ressourcenschonend                                          |
+| Frontend          | **React 19 + Vite**                                         | Vorgabe; schnelle Builds                                                  |
+| Styling / UI      | **Tailwind CSS v4 + shadcn/ui** (Radix)                     | Komponenten liegen im Repo, anpassbar, kein Laufzeit-Lock-in              |
+| Routing           | **React Router** (Library-Modus)                            | Verbreitet, ausreichend                                                   |
+| Server-State      | **TanStack Query**                                          | Caching, optimistische Updates, Persistenz für Offline-Lesen              |
+| Formulare         | **react-hook-form** + Zod-Resolver                          | Passt zu shadcn/ui-Formularen                                             |
+| Diagramme         | **Recharts** (über shadcn „Charts“)                         | Konsistentes Styling                                                      |
+| Datum/Zeit        | **date-fns** (+ `@date-fns/tz`)                             | Modular, tree-shakeable                                                   |
+| Icons             | **lucide-react**                                            | Standard bei shadcn                                                       |
+| PWA               | **vite-plugin-pwa** (Workbox)                               | Manifest + Service Worker                                                 |
+| Tests             | **Vitest** (Unit/Integration), **Playwright** (E2E, später) | Einheitlich, schnell                                                      |
+| Container         | Docker (Multi-Arch amd64/arm64), Docker Compose lokal       |                                                                           |
 
 Bewusst **nicht** verwendet: PostgreSQL, Redis, Next.js/SSR (unnötig für private SPA), GraphQL, externe Auth-Provider, CSS-in-JS.
 
@@ -104,13 +104,17 @@ Anpassung gegenüber der Vorgabe: zusätzlicher Ordner **`shared/`** (gemeinsame
 ```ts
 // shared/src/modules/types.ts (vereinfacht)
 interface ModuleDefinition<Config, Data> {
-  id: string;                      // stabil, nie umbenennen: 'water'
-  version: number;                 // Version des Daten-Schemas
-  configSchema: ZodType<Config>;   // Tracker-Konfiguration (Einheit, Schnellmengen …)
-  dataSchema: ZodType<Data>;       // Payload eines Eintrags
-  fields: FieldDefinition[];       // deklarative Felder → generische Formulare
-  entryKind: 'instant' | 'span';   // Zeitpunkt vs. Zeitraum (Schlaf, Sport, Fokus)
-  primaryValue: { label: string; unit?: string; aggregate: 'sum' | 'avg' | 'last' | 'count' | 'max' };
+  id: string; // stabil, nie umbenennen: 'water'
+  version: number; // Version des Daten-Schemas
+  configSchema: ZodType<Config>; // Tracker-Konfiguration (Einheit, Schnellmengen …)
+  dataSchema: ZodType<Data>; // Payload eines Eintrags
+  fields: FieldDefinition[]; // deklarative Felder → generische Formulare
+  entryKind: 'instant' | 'span'; // Zeitpunkt vs. Zeitraum (Schlaf, Sport, Fokus)
+  primaryValue: {
+    label: string;
+    unit?: string;
+    aggregate: 'sum' | 'avg' | 'last' | 'count' | 'max';
+  };
   dayAssignment?: 'start' | 'end'; // Schlaf: Aufwachtag
   upgrade?: Record<number, (old: unknown) => unknown>; // Daten-Migration beim Lesen
   defaultTrackers?: TrackerSeed[];
@@ -123,32 +127,32 @@ Module werden in je einer **Registry-Datei** pro Paket registriert. Ein neues Mo
 
 ### Warum nicht voll generisch (EAV) und nicht eine Tabelle pro Modul?
 
-| Ansatz | Problem |
-|---|---|
-| Tabelle pro Modul | Jede Erweiterung = Schemamigration + neue Endpunkte; Dashboard/Export/Statistik müssen jedes Modul kennen |
-| Voll generisches EAV (Feld-Wert-Zeilen) | Komplexe Queries, schlechte Typisierung, schwer wartbar |
-| **Hybrid (gewählt)** | Gemeinsame Kernspalten (Zeit, Tag, Hauptwert) für schnelle generische Auswertungen + validiertes JSON für Moduldetails |
+| Ansatz                                  | Problem                                                                                                                |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Tabelle pro Modul                       | Jede Erweiterung = Schemamigration + neue Endpunkte; Dashboard/Export/Statistik müssen jedes Modul kennen              |
+| Voll generisches EAV (Feld-Wert-Zeilen) | Komplexe Queries, schlechte Typisierung, schwer wartbar                                                                |
+| **Hybrid (gewählt)**                    | Gemeinsame Kernspalten (Zeit, Tag, Hauptwert) für schnelle generische Auswertungen + validiertes JSON für Moduldetails |
 
 ## 5. API-Design
 
 REST, JSON, versioniert unter `/api/v1`. Fehler im Format **RFC 9457** (`application/problem+json`).
 
-| Endpunkt | Zweck |
-|---|---|
-| `POST /auth/login`, `POST /auth/logout`, `GET /auth/session` | Anmeldung |
-| `GET /health` | Healthcheck (ohne Auth, ohne Daten) |
-| `GET/POST/PATCH /trackers`, `POST /trackers/:id/archive` | Tracker-Verwaltung |
-| `GET /entries?tracker=&from=&to=` | Einträge abfragen |
-| `PUT /entries/:id` | Eintrag anlegen **oder** aktualisieren (idempotent, ID vom Client, UUIDv7) |
-| `DELETE /entries/:id` | Soft Delete |
-| `GET /days/:date` | Tageszusammenfassung aller Tracker (Dashboard) |
-| `GET /stats/:trackerId?period=week&from=&to=` | Aggregationen |
-| `GET /stats/correlation?a=&b=&from=&to=` | Beschreibende Korrelation (Phase 4) |
-| `GET/PUT /goals`, `GET/PUT /settings`, `GET/PUT /dashboard` | Konfiguration |
-| `GET /export?format=json|csv` | Datenexport |
-| `POST /backups`, `GET /backups` | Manuelles Backup / Liste |
-| `GET /backups/download` | Frischer konsistenter Snapshot als Datei-Download |
-| `POST /backups/restore` | Wiederherstellung aus hochgeladener `.db` |
+| Endpunkt                                                     | Zweck                                                                      |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| `POST /auth/login`, `POST /auth/logout`, `GET /auth/session` | Anmeldung                                                                  |
+| `GET /health`                                                | Healthcheck (ohne Auth, ohne Daten)                                        |
+| `GET/POST/PATCH /trackers`, `POST /trackers/:id/archive`     | Tracker-Verwaltung                                                         |
+| `GET /entries?tracker=&from=&to=`                            | Einträge abfragen                                                          |
+| `PUT /entries/:id`                                           | Eintrag anlegen **oder** aktualisieren (idempotent, ID vom Client, UUIDv7) |
+| `DELETE /entries/:id`                                        | Soft Delete                                                                |
+| `GET /days/:date`                                            | Tageszusammenfassung aller Tracker (Dashboard)                             |
+| `GET /stats/:trackerId?period=week&from=&to=`                | Aggregationen                                                              |
+| `GET /stats/correlation?a=&b=&from=&to=`                     | Beschreibende Korrelation (Phase 4)                                        |
+| `GET/PUT /goals`, `GET/PUT /settings`, `GET/PUT /dashboard`  | Konfiguration                                                              |
+| `GET /export?format=json                                     | csv`                                                                       | Datenexport |
+| `POST /backups`, `GET /backups`                              | Manuelles Backup / Liste                                                   |
+| `GET /backups/download`                                      | Frischer konsistenter Snapshot als Datei-Download                          |
+| `POST /backups/restore`                                      | Wiederherstellung aus hochgeladener `.db`                                  |
 
 **Idempotente Schreibvorgänge mit Client-IDs** sind die zentrale Vorbereitung auf Offline-Sync: Ein späterer Outbox-Mechanismus kann Requests beliebig oft wiederholen, ohne Duplikate zu erzeugen.
 
@@ -163,11 +167,11 @@ REST, JSON, versioniert unter `/api/v1`. Fehler im Format **RFC 9457** (`applica
 
 ## 7. PWA & Offline-Strategie
 
-| Stufe | Inhalt | Phase |
-|---|---|---|
-| 1 | Manifest, Icons, Service Worker; App-Shell precached; Installierbarkeit | 1 |
-| 2 | Lesecache: TanStack-Query-Cache in IndexedDB persistiert → Dashboard zeigt letzte bekannte Daten offline | 2 |
-| 3 | Schreib-Outbox: fehlgeschlagene `PUT /entries/:id` in IndexedDB, automatische Wiederholung bei Verbindung | später |
+| Stufe | Inhalt                                                                                                    | Phase  |
+| ----- | --------------------------------------------------------------------------------------------------------- | ------ |
+| 1     | Manifest, Icons, Service Worker; App-Shell precached; Installierbarkeit                                   | 1      |
+| 2     | Lesecache: TanStack-Query-Cache in IndexedDB persistiert → Dashboard zeigt letzte bekannte Daten offline  | 2      |
+| 3     | Schreib-Outbox: fehlgeschlagene `PUT /entries/:id` in IndexedDB, automatische Wiederholung bei Verbindung | später |
 
 API-Antworten werden **nicht** vom Service Worker gecacht (vermeidet veraltete Gesundheitsdaten im SW-Cache und Auth-Probleme); das übernimmt Stufe 2 kontrolliert.
 
@@ -175,17 +179,17 @@ Service Worker und Installation erfordern einen **Secure Context** (HTTPS oder `
 
 ## 8. Sicherheit
 
-| Thema | Maßnahme |
-|---|---|
-| Netzwerk | Kein Port-Forwarding, kein Tailscale Funnel. Erreichbar nur im Tailnet (und optional LAN) |
-| Authentifizierung | Ein Passwort, gehasht mit `scrypt` (node:crypto, keine Zusatzabhängigkeit). Initiales Passwort über App-Konfiguration bzw. Ersteinrichtungs-Bildschirm |
-| Sitzungen | Zufälliges Token (256 bit), in DB nur als SHA-256-Hash; Cookie `HttpOnly; Secure; SameSite=Lax`; gleitende Laufzeit 90 Tage; Liste aktiver Sitzungen mit Widerruf |
-| CSRF | SameSite-Cookie + Prüfung des `Origin`-Headers bei schreibenden Requests |
-| Brute Force | Rate-Limit + Verzögerung auf `/auth/login` (In-Memory reicht bei Single-Instance) |
-| Header | CSP ohne Fremd-Origins, `X-Content-Type-Options`, `Referrer-Policy: no-referrer`, `Permissions-Policy` |
-| Logging | Keine Request-Bodies, keine Eintragsinhalte, keine Cookies/Tokens; pino-Redaction als Sicherheitsnetz |
-| Speicherung | DB-Datei im Container-`/data`, nur für die App zugänglich. Keine Verschlüsselung at rest im MVP (Bedrohungsmodell: Gerät im eigenen Haushalt); HA-Backups sind verschlüsselt (siehe FEASIBILITY) |
-| Optional später | Tailscale-Identitätsheader (`Tailscale-User-Login`) als komfortabler Zweitfaktor/Auto-Login |
+| Thema             | Maßnahme                                                                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Netzwerk          | Kein Port-Forwarding, kein Tailscale Funnel. Erreichbar nur im Tailnet (und optional LAN)                                                                                                        |
+| Authentifizierung | Ein Passwort, gehasht mit `scrypt` (node:crypto, keine Zusatzabhängigkeit). Initiales Passwort über App-Konfiguration bzw. Ersteinrichtungs-Bildschirm                                           |
+| Sitzungen         | Zufälliges Token (256 bit), in DB nur als SHA-256-Hash; Cookie `HttpOnly; Secure; SameSite=Lax`; gleitende Laufzeit 90 Tage; Liste aktiver Sitzungen mit Widerruf                                |
+| CSRF              | SameSite-Cookie + Prüfung des `Origin`-Headers bei schreibenden Requests                                                                                                                         |
+| Brute Force       | Rate-Limit + Verzögerung auf `/auth/login` (In-Memory reicht bei Single-Instance)                                                                                                                |
+| Header            | CSP ohne Fremd-Origins, `X-Content-Type-Options`, `Referrer-Policy: no-referrer`, `Permissions-Policy`                                                                                           |
+| Logging           | Keine Request-Bodies, keine Eintragsinhalte, keine Cookies/Tokens; pino-Redaction als Sicherheitsnetz                                                                                            |
+| Speicherung       | DB-Datei im Container-`/data`, nur für die App zugänglich. Keine Verschlüsselung at rest im MVP (Bedrohungsmodell: Gerät im eigenen Haushalt); HA-Backups sind verschlüsselt (siehe FEASIBILITY) |
+| Optional später   | Tailscale-Identitätsheader (`Tailscale-User-Login`) als komfortabler Zweitfaktor/Auto-Login                                                                                                      |
 
 ## 9. Deployment (Zielbild, Detailprüfung in Phase 5)
 
@@ -201,13 +205,14 @@ Service Worker und Installation erfordern einen **Secure Context** (HTTPS oder `
 
 Gewählte Strategie: **Off-Device-Sicherung per manuellem Download** (ADR-013).
 
-| Ebene | Mechanismus | Ort | Schützt vor |
-|---|---|---|---|
-| 1 | Nächtlicher SQLite-Snapshot (Online-Backup-API), Rotation 14 täglich / 8 wöchentlich / 12 monatlich; zusätzlich automatisch vor jeder Migration | `/data/backups` (microSD) | Bedienfehler, fehlerhafte Updates |
-| 2 | Home-Assistant-Backups enthalten `/data` der App | microSD (Standard) | wie Ebene 1 |
-| 3 | **Backup-Download in der UI**: konsistenter Snapshot als `lifeos-YYYY-MM-DD.db` (+ optional JSON-Export) | PC / Smartphone / beliebig | **Kartenausfall** |
+| Ebene | Mechanismus                                                                                                                                     | Ort                        | Schützt vor                       |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | --------------------------------- |
+| 1     | Nächtlicher SQLite-Snapshot (Online-Backup-API), Rotation 14 täglich / 8 wöchentlich / 12 monatlich; zusätzlich automatisch vor jeder Migration | `/data/backups` (microSD)  | Bedienfehler, fehlerhafte Updates |
+| 2     | Home-Assistant-Backups enthalten `/data` der App                                                                                                | microSD (Standard)         | wie Ebene 1                       |
+| 3     | **Backup-Download in der UI**: konsistenter Snapshot als `lifeos-YYYY-MM-DD.db` (+ optional JSON-Export)                                        | PC / Smartphone / beliebig | **Kartenausfall**                 |
 
 Da Ebene 3 manuell ist, unterstützt die App aktiv:
+
 - Dashboard-Hinweis, wenn der letzte Download älter als **14 Tage** ist (Intervall einstellbar); Zeitpunkt wird in `settings` (`last_backup_download_at`) gespeichert
 - Ein Tap → Download (auf Android landet die Datei in „Downloads“)
 - **Restore** in den Einstellungen: `.db`-Datei hochladen → Prüfung (Integrität, Schemaversion, ggf. Migration) → vorher automatischer Snapshot des aktuellen Stands → Austausch
@@ -215,12 +220,12 @@ Da Ebene 3 manuell ist, unterstützt die App aktiv:
 
 ## 11. Erweiterungspunkte für die Zukunft
 
-| Erweiterung | Vorbereitung im Design |
-|---|---|
+| Erweiterung                             | Vorbereitung im Design                                                                                               |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | Home Assistant / automatische Erfassung | `entries.source` + `source_ref` (Deduplizierung); Import-Endpunkt mit API-Token; HA-Sensoren können über REST pushen |
-| Apple Health / Health Connect | Gleicher Import-Pfad; Mapping externer Typen auf Tracker |
-| Erinnerungen / Push | Web Push (VAPID) ist selbst-hostbar; auf iOS nur für installierte PWAs. Scheduler im Node-Prozess |
-| KI-Auswertungen | Export-/Aggregations-API als Datenbasis; nur nach expliziter Zustimmung, bevorzugt lokal |
-| Dashboard-Konfiguration | `dashboard_widgets` existiert ab Phase 2 |
-| Offline-Sync | Client-UUIDs, idempotentes PUT, `updated_at`, Soft Delete |
-| Neue Tracker | Modulvertrag + `custom`-Modul |
+| Apple Health / Health Connect           | Gleicher Import-Pfad; Mapping externer Typen auf Tracker                                                             |
+| Erinnerungen / Push                     | Web Push (VAPID) ist selbst-hostbar; auf iOS nur für installierte PWAs. Scheduler im Node-Prozess                    |
+| KI-Auswertungen                         | Export-/Aggregations-API als Datenbasis; nur nach expliziter Zustimmung, bevorzugt lokal                             |
+| Dashboard-Konfiguration                 | `dashboard_widgets` existiert ab Phase 2                                                                             |
+| Offline-Sync                            | Client-UUIDs, idempotentes PUT, `updated_at`, Soft Delete                                                            |
+| Neue Tracker                            | Modulvertrag + `custom`-Modul                                                                                        |
