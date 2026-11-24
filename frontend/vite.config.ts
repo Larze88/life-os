@@ -46,6 +46,8 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    // Allows testing the dev server via `tailscale serve` (*.ts.net) as well.
+    allowedHosts: ['.ts.net'],
     proxy: {
       // Keeps the browser on one origin (cookies, origin check) during development.
       '/api': { target: API_TARGET, changeOrigin: false, xfwd: true },

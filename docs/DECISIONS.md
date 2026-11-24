@@ -115,3 +115,9 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 
 **Entscheidung:** `PUT /trackers/:id/goal` schließt das laufende Ziel am Vortag (`valid_to`) und legt ein neues ab `effectiveFrom` an. Am selben Tag mehrfach geändert, wird das Ziel nur korrigiert. Die UI ändert Ziele immer „ab heute“.
 **Konsequenz:** Vergangene Tage werden immer gegen das damals gültige Ziel bewertet.
+
+## ADR-023 · Übergangsbetrieb auf dem PC, Pi-Deployment vorgezogen (2026-11-24)
+
+**Kontext:** Die App soll hauptsächlich auf dem Handy genutzt werden.
+**Entscheidung:** Sofort-Lösung: `tailscale serve` auf dem Windows-PC vor dem lokalen Produktions-Build (gleicher Mechanismus wie später auf dem Pi, ADR-007). Das Pi-Deployment (Phase 5) wird vor die weiteren Module gezogen.
+**Konsequenz:** Daten, die bis dahin auf dem PC entstehen, werden per Backup-Download/Restore auf den Pi übertragen. Die Restore-Funktion wird deshalb mit dem Deployment gebaut.

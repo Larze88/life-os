@@ -27,7 +27,25 @@ Dann im Browser **http://localhost:5173** öffnen. Beim ersten Start legst du de
 
 - Die lokale Datenbank liegt in `database/data/lifeos.db` und wird nie committet.
 - Zum Zurücksetzen den Server stoppen (Strg+C) und den Ordner `database/data` löschen.
-- Vom Handy aus kannst du lokal noch nicht testen. Das klappt erst mit HTTPS in Phase 5.
+
+## Auf dem Handy nutzen (übergangsweise über den PC)
+
+Bis Life OS auf dem Raspberry Pi läuft, kann das Handy über Tailscale auf den PC zugreifen. Der PC muss dafür eingeschaltet sein.
+
+1. Einmalig in der Tailscale-Verwaltung (https://login.tailscale.com/admin/dns) **MagicDNS** und **HTTPS Certificates** aktivieren.
+2. Life OS starten (statt `npm run dev`):
+   ```powershell
+   cd $HOME\life-os
+   npm run phone
+   ```
+3. In einem **zweiten** PowerShell-Fenster einmalig:
+   ```powershell
+   tailscale serve --bg 8080
+   ```
+   Die Ausgabe zeigt die Adresse, z. B. `https://desktop-xxxx.<tailnet>.ts.net`. Die Freigabe bleibt bestehen, auch nach Neustarts; beenden mit `tailscale serve reset`.
+4. Auf dem Handy (Tailscale aktiv) die Adresse in **Chrome** öffnen → Menü ⋮ → **„App installieren“** bzw. „Zum Startbildschirm hinzufügen“.
+
+`npm run phone` und `npm run dev` nutzen dieselbe Datenbank, aber nicht gleichzeitig (beide brauchen Port 8080).
 
 ## Befehle
 

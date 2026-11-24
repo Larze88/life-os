@@ -34,6 +34,12 @@
 - [ ] Persistierter Query-Cache (offline lesen) → verschoben, siehe ADR-020
 - **Abnahme:** 101 Tests grün; End-to-End in emuliertem Android-Chrome (Schnellaktionen, Rückgängig, Bearbeiten, Ziel ändern, Rückdatieren, Reload)
 
+## Zwischenschritt – Handy-Zugriff über den PC ✅ (2026-11-24)
+
+- [x] `npm run phone`: Produktions-Build lokal auf einem Port (App + API), gleiche Datenbank wie `npm run dev`
+- [x] Zugriff vom Handy per `tailscale serve` auf dem Windows-PC (HTTPS über `*.ts.net`, PWA installierbar)
+- Ersetzt durch den Betrieb auf dem Pi (Phase 5, vorgezogen)
+
 ## Phase 3a – Erste Module
 
 In dieser Reihenfolge, jeweils mit Widget, Erfassung, Historienliste, Tests:
