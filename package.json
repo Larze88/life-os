@@ -13,6 +13,8 @@
     "frontend"
   ],
   "scripts": {
+    "preinstall": "node scripts/check-node.cjs",
+    "predev": "node scripts/check-node.cjs",
     "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors blue,magenta \"npm:dev -w @lifeos/backend\" \"npm:dev -w @lifeos/frontend\"",
     "build": "npm run build -w @lifeos/frontend && npm run build -w @lifeos/backend",
     "start": "npm run start -w @lifeos/backend",
