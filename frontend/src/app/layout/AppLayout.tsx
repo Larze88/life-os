@@ -1,24 +1,29 @@
 import { Plus, WifiOff } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router';
-import { toast } from 'sonner';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
+import { QuickAddProvider, useQuickAddSheet } from '@/features/tracking/QuickAddSheet';
 import { de } from '@/lib/i18n/de';
 import { useOnlineStatus } from '@/lib/use-online-status';
 import { cn } from '@/lib/utils';
 import { navItems } from './nav-items';
-
-function openQuickAdd() {
-  // Phase 2: bottom sheet with all trackers.
-  toast(de.today.quickAddSoon);
-}
 
 /**
  * Mobile: content + bottom tab bar with a central quick-add button (thumb reach).
  * Desktop (md+): sidebar navigation. docs/PRD.md §7.
  */
 export function AppLayout() {
+  return (
+    <QuickAddProvider>
+      <AppShell />
+    </QuickAddProvider>
+  );
+}
+
+function AppShell() {
   const online = useOnlineStatus();
+  const quickAdd = useQuickAddSheet();
+  const openQuickAdd = () => quickAdd.open();
   const [first, second, third, fourth] = navItems;
 
   return (

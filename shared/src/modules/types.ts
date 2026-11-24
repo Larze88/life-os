@@ -14,6 +14,8 @@ export interface ModuleDefinition<Config = unknown, Data = unknown> {
   configSchema: z.ZodType<Config>;
   /** Validates `entries.data` (current version). */
   dataSchema: z.ZodType<Data>;
+  /** Validates `entries.value` (the primary value). Use `.nullable()` if a module has none. */
+  valueSchema: z.ZodType<number | null>;
   /** Declarative fields for generic forms. */
   fields: readonly FieldDefinition[];
   /** 'instant' = single moment, 'span' = period with start and end (sleep, workouts, focus). */
@@ -38,6 +40,24 @@ export interface TrackerSeed<Config = unknown> {
   icon?: string;
   color?: string;
   config: Config;
+  /** Goals created together with the tracker (valid for all history). */
+  goals?: readonly GoalSeed[];
+  /** Dashboard widgets created together with the tracker. */
+  widgets?: readonly WidgetSeed[];
+}
+
+export interface GoalSeed {
+  metric: 'sum' | 'count' | 'avg' | 'last' | 'duration';
+  period: 'day' | 'week' | 'month';
+  comparator: 'gte' | 'lte' | 'between';
+  target: number;
+  targetMax?: number;
+}
+
+export interface WidgetSeed {
+  /** Widget type, resolved by the frontend widget registry (e.g. 'water.progress'). */
+  type: string;
+  size: 'sm' | 'md' | 'lg';
 }
 
 // Accepts definitions with any concrete Config/Data types.

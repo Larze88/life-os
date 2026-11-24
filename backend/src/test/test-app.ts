@@ -9,6 +9,7 @@ import { loadConfig, type AppConfig } from '../config.ts';
 import { openDatabase, type DbHandle } from '../db/client.ts';
 import { runMigrations } from '../db/migrate.ts';
 import { createServices } from '../services.ts';
+import { seedModules } from '../core/seed.ts';
 import type { AppServices } from '../types.ts';
 
 export const TEST_ORIGIN = 'http://localhost:5173';
@@ -42,6 +43,7 @@ export async function createTestContext(
     credentials: new CredentialStore(handle.db, FAST_HASH),
     loginLimiter: new LoginRateLimiter(),
   });
+  seedModules(handle.db, services.modules);
   const app = createApp(services);
 
   return {
@@ -74,4 +76,14 @@ export function sessionCookie(res: Response): string | undefined {
   const header = res.headers.get('set-cookie');
   const match = header?.match(/lifeos_session=([^;]*)/);
   return match?.[1] ? `lifeos_session=${match[1]}` : undefined;
+}
+
+/** Completes the initial setup and returns a signed-in session cookie. */
+export async function signedIn(ctx: TestContext): Promise<string> {
+  const res = await ctx.request('POST', '/api/v1/auth/setup', {
+    body: { password: 'test-passwort-123' },
+  });
+  const cookie = sessionCookie(res);
+  if (!cookie) throw new Error('setup failed');
+  return cookie;
 }

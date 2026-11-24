@@ -1,3 +1,4 @@
+import { moduleRegistry } from '@lifeos/shared';
 import type { Logger } from 'pino';
 import { CredentialStore } from './auth/credentials.ts';
 import { LoginRateLimiter } from './auth/rate-limiter.ts';
@@ -19,6 +20,7 @@ export function createServices(
     sessions: new SessionStore(db),
     credentials: new CredentialStore(db),
     loginLimiter: new LoginRateLimiter(),
+    modules: moduleRegistry,
     ...overrides,
   };
 }

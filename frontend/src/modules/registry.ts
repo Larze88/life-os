@@ -1,24 +1,24 @@
 import type { ComponentType } from 'react';
+import type { FrontendModule, WidgetProps } from './types';
+import { waterFrontend } from './water';
 
 /**
- * Frontend side of the module system (docs/ARCHITECTURE.md §4). Each module contributes
- * UI pieces; the shared ModuleDefinition (validation, fields) lives in @lifeos/shared.
- * Empty in phase 1 — water, mood, habits and sleep follow in phase 3.
+ * Registered frontend modules. Add new modules here (one line) —
+ * see CLAUDE.md "Neues Modul hinzufügen".
  */
-export interface FrontendModule {
-  /** Must match the id in @lifeos/shared's module registry. */
-  id: string;
-  label: string;
-  /** Tailwind color token, e.g. 'water' → bg-water / text-water. */
-  color: string;
-  Widget?: ComponentType<{ trackerId: string }>;
-  QuickActions?: ComponentType<{ trackerId: string }>;
-  EntryForm?: ComponentType<{ trackerId: string; onDone: () => void }>;
-  DetailView?: ComponentType<{ trackerId: string }>;
-}
-
-export const frontendModules: readonly FrontendModule[] = [];
+export const frontendModules: readonly FrontendModule[] = [waterFrontend];
 
 export function getFrontendModule(id: string): FrontendModule | undefined {
   return frontendModules.find((m) => m.id === id);
 }
+
+const widgetComponents = new Map<string, ComponentType<WidgetProps>>(
+  frontendModules.flatMap((m) => Object.entries(m.widgets)),
+);
+
+/** Resolves a widget type; unknown types (e.g. from a newer server) are skipped. */
+export function getWidgetComponent(type: string): ComponentType<WidgetProps> | undefined {
+  return widgetComponents.get(type);
+}
+
+export type { FrontendModule, WidgetProps } from './types';

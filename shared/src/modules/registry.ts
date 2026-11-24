@@ -1,4 +1,5 @@
 import type { AnyModuleDefinition } from './types.ts';
+import { waterModule } from './water/definition.ts';
 
 export const MODULE_ID_RE = /^[a-z][a-z0-9-]{1,31}$/;
 
@@ -53,7 +54,7 @@ export function upgradeEntryData(
 }
 
 /**
- * The registered modules. Empty in phase 1; water, mood, habits and sleep follow in phase 3.
- * Add new modules here (one line) — see CLAUDE.md "Neues Modul hinzufügen".
+ * The registered modules. Add new modules here (one line) —
+ * see CLAUDE.md "Neues Modul hinzufügen".
  */
-export const moduleRegistry = createModuleRegistry([]);
+export const moduleRegistry = createModuleRegistry([waterModule]);

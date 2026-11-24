@@ -9,7 +9,7 @@ Private, selbst gehostete App zum Erfassen und Auswerten des eigenen Alltags: Wa
 
 ## Status
 
-Phase 1 (technisches Grundgerüst) ist abgeschlossen: Anmeldung, Navigation, PWA, Datenbank mit Migrationen und Tests. Die Tracking-Module folgen ab Phase 2/3, siehe [docs/ROADMAP.md](docs/ROADMAP.md).
+Grundgerüst und Dashboard stehen; das erste Modul **Wasser** ist nutzbar (Schnellbuttons, Tagesziel, Rückgängig, Bearbeiten, Rückblick auf vergangene Tage). Weitere Module folgen, siehe [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Lokal starten (Windows)
 

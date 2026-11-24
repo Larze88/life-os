@@ -7,6 +7,7 @@ import { originCheck } from './middleware/origin-check.ts';
 import { requestLog } from './middleware/request-log.ts';
 import { authRoutes } from './routes/auth.ts';
 import { healthRoutes } from './routes/health.ts';
+import { dayRoutes, entryRoutes, settingsRoutes, trackerRoutes } from './routes/tracking.ts';
 import type { AppEnv, AppServices } from './types.ts';
 
 export function createApp(services: AppServices) {
@@ -43,7 +44,11 @@ export function createApp(services: AppServices) {
   const api = new Hono<AppEnv>()
     .use(originCheck())
     .route('/health', healthRoutes)
-    .route('/auth', authRoutes);
+    .route('/auth', authRoutes)
+    .route('/settings', settingsRoutes)
+    .route('/trackers', trackerRoutes)
+    .route('/entries', entryRoutes)
+    .route('/days', dayRoutes);
 
   app.route(API_PREFIX, api);
   app.all(`${API_PREFIX}/*`, () => {

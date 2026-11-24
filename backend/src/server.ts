@@ -6,6 +6,7 @@ import { openDatabase } from './db/client.ts';
 import { runMigrations } from './db/migrate.ts';
 import { createLogger } from './lib/logger.ts';
 import { createServices } from './services.ts';
+import { seedModules } from './core/seed.ts';
 
 const config = loadConfig();
 const logger = createLogger(config);
@@ -26,6 +27,8 @@ try {
 }
 
 const services = createServices(config, logger, handle.db);
+const seeded = seedModules(handle.db, services.modules);
+if (seeded.length > 0) logger.info({ trackers: seeded }, 'default trackers created');
 services.sessions.purgeExpired();
 const app = createApp(services);
 

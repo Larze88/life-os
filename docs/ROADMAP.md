@@ -24,24 +24,26 @@
 - [ ] `docker-compose.yml` auf Phase 5 verschoben (Docker unter Windows nicht vorhanden, ADR-014)
 - **Abnahme:** 72 Tests grün, Produktions-Build, End-to-End-Durchlauf in emuliertem Android-Chrome (Einrichtung → Dashboard → Einstellungen → Abmelden → Anmelden), Service Worker aktiv
 
-## Phase 2 – Dashboard
+## Phase 2 – Dashboard ✅ (2026-11-24, zusammen mit dem Wasser-Modul)
 
-- `GET /days/:date`, Widget-Registry, Standardlayout aus `dashboard_widgets`
-- Tagesübersicht (Fortschrittsringe), Datumsnavigation (Heute/zurück)
-- Schnellerfassung: „+“-Button → Bottom Sheet mit allen Trackern
-- Optimistische Updates + Rückgängig-Toast, persistierter Query-Cache (Offline lesen)
-- **Abnahme:** Dashboard mobil und Desktop, Lighthouse-PWA-Check bestanden
+- [x] `GET /days/:date` (Tageszusammenfassung inkl. Ziele und Widgets), Widget-Registry, Standardlayout aus `dashboard_widgets` (per Seed)
+- [x] Datumsnavigation (vor/zurück, „Heute“, `?tag=YYYY-MM-DD`, keine Zukunft)
+- [x] Schnellerfassung: „+“-Button → Bottom Sheet mit den Schnellaktionen aller Tracker
+- [x] Optimistische Updates mit Rollback, Rückgängig-Toast
+- [x] Einträge: idempotentes `PUT /entries/:id`, Liste, Soft Delete; Tracker- und Einstellungs-API
+- [ ] Persistierter Query-Cache (offline lesen) → verschoben, siehe ADR-020
+- **Abnahme:** 101 Tests grün; End-to-End in emuliertem Android-Chrome (Schnellaktionen, Rückgängig, Bearbeiten, Ziel ändern, Rückdatieren, Reload)
 
 ## Phase 3a – Erste Module
 
 In dieser Reihenfolge, jeweils mit Widget, Erfassung, Historienliste, Tests:
 
-1. **Wasser** (Schnellmengen, Tagesziel)
+1. ✅ **Wasser** (Schnellmengen, Tagesziel mit Historie, eigene Menge, Einträge bearbeiten/löschen)
 2. **Stimmung & Wohlbefinden**
 3. **Gewohnheiten** (Zeitpläne, Serien)
 4. **Schlaf** (Zeitraum, Aufwachtag)
 
-Ziele (`goals`) mit Gültigkeitszeitraum werden mit Wasser eingeführt.
+Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 
 ## Phase 3b – Weitere Module
 

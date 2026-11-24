@@ -1,3 +1,4 @@
+import type { ModuleRegistry } from '@lifeos/shared';
 import type { Logger } from 'pino';
 import type { CredentialStore } from './auth/credentials.ts';
 import type { LoginRateLimiter } from './auth/rate-limiter.ts';
@@ -13,6 +14,7 @@ export interface AppServices {
   sessions: SessionStore;
   credentials: CredentialStore;
   loginLimiter: LoginRateLimiter;
+  modules: ModuleRegistry;
 }
 
 export interface AppEnv {

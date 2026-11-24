@@ -6,7 +6,7 @@ Life OS ist eine private Single-User-PWA zum Alltags-Tracking (React/Vite/Tailwi
 
 ## Projektstand
 
-Phase 1 abgeschlossen: Monorepo (npm Workspaces), Auth, Navigation, PWA, DB-Schema + erste Migration, Tests. Modul-Registries existieren, sind aber noch leer. Nächster Schritt: Phase 2 (Dashboard).
+Phase 1 und 2 abgeschlossen, erstes Modul **Wasser** fertig (Vorlage für weitere Module: `shared/src/modules/water`, `frontend/src/modules/water`). Nächster Schritt: Phase 3a – Stimmung, Gewohnheiten, Schlaf.
 
 ## Befehle
 
@@ -35,7 +35,8 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 - **React Router 8** (Library-Modus, `createBrowserRouter` aus `react-router`), **Zod 4**, **Vite 8**, **Vitest 5**, **Tailwind 4** (CSS-Konfiguration in `frontend/src/styles/index.css`, keine `tailwind.config`).
 - `@lifeos/shared` wird **nicht gebaut**: Importe zeigen auf TS-Quellen, relative Importe mit `.ts`-Endung. Das Backend wird mit tsup gebündelt.
 - Backend-Tests nutzen `createTestContext()` aus `backend/src/test/test-app.ts` (In-Memory-SQLite mit echten Migrationen).
-- Frontend-Tests mocken `fetch` und rendern die komplette App über `renderApp()` aus `frontend/src/test/render.tsx`.
+- Frontend-Tests mocken `fetch` mit `mockApi()` (`frontend/src/test/mock-api.ts`, Wildcards wie `GET /api/v1/days/*`) und rendern die komplette App über `renderApp()` aus `frontend/src/test/render.tsx`.
+- Backend-Tests für geschützte Routen: `signedIn(ctx)` liefert ein Sitzungscookie. Der Seed läuft im Testkontext automatisch.
 
 ## Nicht verhandelbare Regeln
 
@@ -62,9 +63,9 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 
 ## Neues Modul hinzufügen
 
-1. `shared/src/modules/<id>/definition.ts` – `ModuleDefinition` (configSchema, dataSchema, fields, entryKind, primaryValue, defaultTrackers); in `shared/src/modules/registry.ts` eintragen.
+1. `shared/src/modules/<id>/definition.ts` – `ModuleDefinition` (configSchema, dataSchema, valueSchema, fields, entryKind, dayAssignment, primaryValue, defaultTrackers inkl. goals/widgets); in `shared/src/modules/registry.ts` eintragen und in `shared/src/modules/index.ts` exportieren.
 2. Optional `backend/src/modules/<id>/` für spezielle Auswertungen; in `backend/src/modules/registry.ts` eintragen.
-3. `frontend/src/modules/<id>/` – `Widget`, `QuickActions`, optional `EntryForm` (sonst generisches Formular), `DetailView`; in `frontend/src/modules/registry.ts` eintragen.
+3. `frontend/src/modules/<id>/index.ts` – `FrontendModule` mit `widgets` (Widget-Typ → Komponente, z. B. `'<id>.progress'`), `QuickActions`, `DetailSheet`; in `frontend/src/modules/registry.ts` eintragen. Schreiben über `useQuickAdd()` / Hooks aus `frontend/src/features/tracking/tracking-api.ts`.
 4. Default-Tracker/-Widgets über Seed-Logik (idempotent) – **keine Tabellenmigration** nötig.
 5. Tests: Schema-Validierung (gültig/ungültig), Aggregation, `local_date`-Zuordnung, Widget-Rendering.
 6. `docs/DATA_MODEL.md` (Payload-Tabelle) und `docs/ROADMAP.md` aktualisieren.

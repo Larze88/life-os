@@ -9,6 +9,7 @@ function makeModule(overrides: Partial<ModuleDefinition> = {}): ModuleDefinition
     version: 1,
     configSchema: z.object({}),
     dataSchema: z.object({}),
+    valueSchema: z.number().nullable(),
     fields: [],
     entryKind: 'instant',
     dayAssignment: 'start',

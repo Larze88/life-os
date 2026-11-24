@@ -95,3 +95,23 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 
 **Entscheidung:** Fehlversuche werden global gezählt (5 pro 15 Minuten).
 **Begründung:** Hinter `tailscale serve` kommen alle Anfragen von localhost, und es gibt nur einen legitimen Benutzer. Ein Angreifer im Tailnet könnte den Login dadurch kurz sperren. Das ist akzeptiert, weil das Tailnet privat ist.
+
+## ADR-019 · Phase 2 zusammen mit dem Wasser-Modul (2026-11-24)
+
+**Entscheidung:** Das Dashboard wurde direkt mit dem ersten echten Modul (Wasser) gebaut statt mit Platzhaltern.
+**Begründung:** Ein Widget-System ohne echten Tracker lässt sich nicht sinnvoll testen. Wasser deckt mit Schnellaktion, Tagesziel und Summierung den häufigsten Fall ab und dient als Vorlage für alle weiteren Module.
+
+## ADR-020 · Offline-Lesecache verschoben (2026-11-24)
+
+**Entscheidung:** Das Persistieren des Query-Caches (IndexedDB) folgt später, zusammen mit der Schreib-Outbox.
+**Begründung:** Beides betrifft dieselben Fragen (Datenschutz auf dem Gerät, Löschen beim Abmelden, Konflikte), und vor dem Deployment auf dem Pi ist der Server immer lokal erreichbar. Bis dahin: klare Fehlermeldung bei fehlender Verbindung, kein stiller Datenverlust (optimistische Anzeige wird zurückgerollt).
+
+## ADR-021 · Gelöschte Einträge sind endgültig für den Client (2026-11-24)
+
+**Entscheidung:** Ein `PUT` auf eine soft-gelöschte Eintrags-ID liefert 409, statt den Eintrag wiederzubeleben.
+**Begründung:** Verhindert, dass ein verspäteter Wiederholungsversuch (z. B. aus einer späteren Offline-Outbox) einen per „Rückgängig“ entfernten Eintrag zurückbringt.
+
+## ADR-022 · Zieländerungen gelten ab dem gewählten Tag (2026-11-24)
+
+**Entscheidung:** `PUT /trackers/:id/goal` schließt das laufende Ziel am Vortag (`valid_to`) und legt ein neues ab `effectiveFrom` an. Am selben Tag mehrfach geändert, wird das Ziel nur korrigiert. Die UI ändert Ziele immer „ab heute“.
+**Konsequenz:** Vergangene Tage werden immer gegen das damals gültige Ziel bewertet.

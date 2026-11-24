@@ -160,6 +160,14 @@ Von Drizzle verwaltet (`__drizzle_migrations`).
 }
 ```
 
+### Validierung des Hauptwerts
+
+Jedes Modul definiert ein `valueSchema` für `entries.value` (z. B. Wasser: ganze ml von 1 bis 5000; Module ohne Hauptwert: `null`). Der Server validiert `value` und `data` beim Schreiben über das Modul; Fehler kommen als `errors.value` bzw. `errors["data.<feld>"]` zurück.
+
+### Seed
+
+Module liefern `defaultTrackers` inkl. `goals` (gültig ab `2000-01-01`) und `widgets`. Beim Serverstart werden fehlende Tracker angelegt. Ein vorhandener Tracker-`key` wird nie erneut angefasst, auch wenn er umbenannt oder archiviert wurde.
+
 ## 5. Feldtypen (`FieldDefinition`)
 
 Gemeinsam genutzt von eingebauten Modulen und eigenen Trackern; das Frontend rendert daraus Formulare, das Backend erzeugt daraus Zod-Schemas.
