@@ -40,7 +40,7 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 
 ## Release (neue Version auf den Pi bringen)
 
-1. Version in `package.json` **und** `deployment/home-assistant/app/lifeos/config.yaml` gleich erhöhen (SemVer).
+1. Version in `package.json` **und** `deployment/home-assistant/app/lifeos/config.yaml` gleich erhöhen (SemVer). Achtung: Prettier schreibt `version: '0.x.y'` mit einfachen Anführungszeichen – danach mit `grep` prüfen, dass die Änderung wirklich drin ist.
 2. Committen, auf `main` pushen, dann `release.yml` starten: per Tag `v<version>` oder manuell (GitHub → Actions → „Release image“ → „Run workflow“ bzw. GitHub-API `run_workflow`; aus der Cloud-Sandbox sind Tag-Pushes blockiert). Ergebnis: `ghcr.io/larze88/lifeos-aarch64:<version>` und `:latest`.
 3. Den Inhalt von `deployment/home-assistant/app/` in das öffentliche Repo `Larze88/life-os-ha` übernehmen (dort ändert sich v. a. `version`). Home Assistant zeigt dann das Update an.
 4. Datenbank-Änderungen sind sicher: Migration beim Start mit vorherigem Snapshot.
