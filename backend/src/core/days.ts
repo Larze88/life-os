@@ -1,9 +1,10 @@
 import { and, asc, eq, isNull } from 'drizzle-orm';
 import type { DaySummary, ModuleRegistry, Widget } from '@lifeos/shared';
 import type { Db } from '../db/client.ts';
-import { dashboardWidgets, entries } from '../db/schema.ts';
+import { entries } from '../db/schema.ts';
 import { aggregateValues } from './aggregate.ts';
 import { dailyGoalOn } from './goals.ts';
+import { listWidgets } from './dashboard.ts';
 import { listActiveTrackers, toTracker } from './trackers.ts';
 
 /** Everything the dashboard needs for one logical day, in a single request. */
@@ -27,21 +28,8 @@ export function getDaySummary(db: Db, registry: ModuleRegistry, date: string): D
     };
   });
 
-  const activeIds = new Set(trackerRows.map((t) => t.id));
-  const widgets: Widget[] = db
-    .select()
-    .from(dashboardWidgets)
-    .orderBy(asc(dashboardWidgets.position))
-    .all()
-    .filter((w) => w.trackerId === null || activeIds.has(w.trackerId))
-    .map((w) => ({
-      id: w.id,
-      widgetType: w.widgetType,
-      trackerId: w.trackerId,
-      position: w.position,
-      size: w.size,
-      config: w.config,
-    }));
+  // The dashboard only shows visible widgets; the layout editor uses listWidgets().
+  const widgets: Widget[] = listWidgets(db).filter((w) => !w.hidden);
 
   return { date, trackers, widgets };
 }

@@ -42,6 +42,20 @@ export const de = {
     noWidgets: 'Noch keine Widgets vorhanden.',
     loadError: 'Der Tag konnte nicht geladen werden.',
   },
+  dashboard: {
+    customize: 'Anpassen',
+    title: 'Dashboard anpassen',
+    description:
+      'Karten ein- oder ausblenden und die Reihenfolge ändern. Ausgeblendete Karten behalten ihre Daten.',
+    show: (name: string) => `${name} anzeigen`,
+    moveUp: (name: string) => `${name} nach oben`,
+    moveDown: (name: string) => `${name} nach unten`,
+    hidden: 'ausgeblendet',
+    save: 'Speichern',
+    saved: 'Dashboard gespeichert',
+    conflict: 'Das Dashboard hat sich inzwischen geändert. Bitte erneut öffnen.',
+    allHidden: 'Alle Karten sind ausgeblendet. Über „Anpassen“ kannst du sie wieder einblenden.',
+  },
   quickAdd: {
     title: 'Schnell erfassen',
     description: 'Ein Tipp genügt.',

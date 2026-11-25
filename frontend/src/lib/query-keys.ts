@@ -11,6 +11,7 @@ export const queryKeys = {
   entries: (trackerId: string, from: string, to: string) =>
     ['tracking', 'entries', trackerId, from, to] as const,
   dayEntries: (date: string) => ['tracking', 'entries', '*', date] as const,
+  dashboard: ['tracking', 'dashboard'] as const,
   /** Under 'tracking' so that every write refreshes statistics as well. */
   statsSeries: (trackerId: string, from: string, to: string) =>
     ['tracking', 'stats', trackerId, from, to] as const,

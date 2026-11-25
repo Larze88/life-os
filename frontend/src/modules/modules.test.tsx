@@ -41,6 +41,7 @@ function createFakeBackend() {
       position: 0,
       size: 'md' as const,
       config: {},
+      hidden: false,
     },
     {
       id: 'w2',
@@ -49,6 +50,7 @@ function createFakeBackend() {
       position: 1,
       size: 'md' as const,
       config: {},
+      hidden: false,
     },
     {
       id: 'w3',
@@ -57,6 +59,7 @@ function createFakeBackend() {
       position: 2,
       size: 'md' as const,
       config: {},
+      hidden: false,
     },
   ];
   const live = () => entries.filter((e) => !e.deleted);

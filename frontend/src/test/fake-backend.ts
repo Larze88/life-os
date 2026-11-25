@@ -29,7 +29,7 @@ export function createFakeBackend(trackers: Tracker[], widgets: Widget[]) {
   function summary(date: string): DaySummary {
     return {
       date,
-      widgets,
+      widgets: widgets.filter((w) => !w.hidden),
       trackers: trackers.map((tracker) => {
         const values = live()
           .filter((e) => e.trackerId === tracker.id)
@@ -81,6 +81,18 @@ export function createFakeBackend(trackers: Tracker[], widgets: Widget[]) {
       if (e) e.deleted = true;
       return new Response(null, { status: 204 });
     },
+    'GET /api/v1/dashboard': () => json({ widgets }),
+    'PUT /api/v1/dashboard/layout': (_url, init) => {
+      const body = JSON.parse(String(init?.body)) as { widgets: { id: string; hidden: boolean }[] };
+      const reordered = body.widgets.map((item, position) => ({
+        ...widgets.find((w) => w.id === item.id)!,
+        hidden: item.hidden,
+        position,
+      }));
+      widgets.splice(0, widgets.length, ...reordered);
+      return json({ widgets });
+    },
+    'GET /api/v1/trackers': () => json(trackers),
     'POST /api/v1/trackers': (_url, init) => {
       const body = JSON.parse(String(init?.body)) as {
         module: string;
@@ -116,5 +128,13 @@ export function tracker(id: string, module: string, name: string, config: unknow
 }
 
 export function widget(widgetType: string, trackerId: string | null): Widget {
-  return { id: `w-${widgetType}`, widgetType, trackerId, position: 0, size: 'md', config: {} };
+  return {
+    id: `w-${widgetType}`,
+    widgetType,
+    trackerId,
+    position: 0,
+    size: 'md',
+    config: {},
+    hidden: false,
+  };
 }

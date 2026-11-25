@@ -24,6 +24,8 @@ export interface FrontendModule {
   id: string;
   /** Widget components by widget type (e.g. 'water.progress'). */
   widgets: Record<string, ComponentType<WidgetProps>>;
+  /** Names of widgets not bound to one tracker (shown in the dashboard editor). */
+  widgetTitles?: Record<string, string>;
   /** Compact one-tap actions, shown in the quick-add sheet. */
   QuickActions?: ComponentType<TrackerUiProps>;
   /** Formats a (daily aggregated) primary value for statistics, e.g. "7 h 45 min". */

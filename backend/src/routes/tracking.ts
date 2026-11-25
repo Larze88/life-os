@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
 import {
+  dashboardLayoutSchema,
   entryQuerySchema,
   entryUpsertSchema,
   goalUpdateSchema,
@@ -8,6 +9,7 @@ import {
   trackerCreateSchema,
   trackerUpdateSchema,
 } from '@lifeos/shared';
+import { listWidgets, saveLayout } from '../core/dashboard.ts';
 import { getDaySummary } from '../core/days.ts';
 import { listEntries, softDeleteEntry, upsertEntry } from '../core/entries.ts';
 import { dailyGoalOn, setDailyGoalTarget } from '../core/goals.ts';
@@ -85,3 +87,10 @@ export const dayRoutes = new Hono<AppEnv>()
     c.header('Cache-Control', 'no-store');
     return c.json(getDaySummary(db, modules, c.req.valid('param').date));
   });
+
+export const dashboardRoutes = new Hono<AppEnv>()
+  .use(requireAuth())
+  .get('/', (c) => c.json({ widgets: listWidgets(c.var.services.db) }))
+  .put('/layout', validate('json', dashboardLayoutSchema), (c) =>
+    c.json({ widgets: saveLayout(c.var.services.db, c.req.valid('json')) }),
+  );

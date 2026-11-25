@@ -1,0 +1,1 @@
+ALTER TABLE `dashboard_widgets` ADD `hidden` integer DEFAULT false NOT NULL;

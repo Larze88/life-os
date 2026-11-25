@@ -43,6 +43,7 @@ function summary(date: string, value: number | null, count: number): DaySummary 
         position: 0,
         size: 'md',
         config: {},
+        hidden: false,
       },
     ],
   };

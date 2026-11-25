@@ -6,7 +6,7 @@ Life OS ist eine private Single-User-PWA zum Alltags-Tracking (React/Vite/Tailwi
 
 ## Projektstand
 
-Phasen 1, 2, 3a, 3b, 4 (Statistiken) und das Pi-Deployment sind abgeschlossen (Version 0.5.0, läuft auf dem Raspberry Pi). Module: Wasser, Stimmung, Schlaf, Gewohnheiten, Bewegung, Ernährung, Körperwerte, Beschwerden, Fokus. Vorlagen: `water` (Schnellmengen, Ziel), `sleep` (Zeitraum, `deriveValue`), `habit`/`measurement` (eigene Tracker, trackerübergreifendes Widget), `focus` (Timer). Gemeinsame UI-Bausteine: `frontend/src/components/tracking/` (ModuleSheet, EntryList, WidgetHeader, DurationPicker), `ChipGroup`, `ScalePicker`. Statistik: `backend/src/core/stats.ts`, `frontend/src/features/stats/` (eigene SVG-Diagramme). Offen: anpassbares Dashboard, eigene Tracker (`custom`), Verlauf-Seite.
+Phasen 1, 2, 3a, 3b, 4 (Statistiken), anpassbares Dashboard und das Pi-Deployment sind abgeschlossen (Version 0.6.0, läuft auf dem Raspberry Pi). Module: Wasser, Stimmung, Schlaf, Gewohnheiten, Bewegung, Ernährung, Körperwerte, Beschwerden, Fokus. Vorlagen: `water` (Schnellmengen, Ziel), `sleep` (Zeitraum, `deriveValue`), `habit`/`measurement` (eigene Tracker, trackerübergreifendes Widget), `focus` (Timer). Gemeinsame UI-Bausteine: `frontend/src/components/tracking/` (ModuleSheet, EntryList, WidgetHeader, DurationPicker), `ChipGroup`, `ScalePicker`. Statistik: `backend/src/core/stats.ts`, `frontend/src/features/stats/` (eigene SVG-Diagramme). Offen: eigene Tracker (`custom`), Verlauf-Seite, Offline-Erfassung.
 
 ## Befehle
 
@@ -46,6 +46,10 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 4. Datenbank-Änderungen sind sicher: Migration beim Start mit vorherigem Snapshot.
 
 Docker-Builds in der Cloud-Sandbox: Proxy-Zertifikat nur in einer temporären Dockerfile-Kopie einbinden, nie ins Repository.
+
+## Upgrade-Tests
+
+Bei Schema-Änderungen das Upgrade realistisch prüfen: alte Version (Git-Worktree von `main`, `@lifeos/shared` dort auf den Worktree verlinken!) legt Daten an, neue Version startet auf derselben DB. Server mit `exec node …` starten und per PID beenden – `pkill` mit relativen Pfaden trifft nicht zuverlässig.
 
 ## Arbeitsweise bei Textersetzungen
 

@@ -87,7 +87,7 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 ## Danach (Backlog, priorisierbar)
 
 - Schreib-Outbox (Offline-Erfassung)
-- Dashboard anpassen (Reihenfolge, Größe, Ein/Aus)
+- [x] Dashboard anpassen (Karten ein-/ausblenden, Reihenfolge) – Version 0.6.0
 - Erinnerungen (Web Push)
 - Home-Assistant-Integration (Sensoren → Einträge per Import-API mit Token; umgekehrt Life-OS-Werte als HA-Sensoren)
 - Health Connect / Apple Health (Import über Export-Dateien oder Shortcuts)

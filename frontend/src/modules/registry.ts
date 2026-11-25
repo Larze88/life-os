@@ -34,6 +34,15 @@ const widgetComponents = new Map<string, ComponentType<WidgetProps>>(
   frontendModules.flatMap((m) => Object.entries(m.widgets)),
 );
 
+const widgetTitles = new Map<string, string>(
+  frontendModules.flatMap((m) => Object.entries(m.widgetTitles ?? {})),
+);
+
+/** Title of a tracker-independent widget type, if a module defines one. */
+export function getWidgetTitle(type: string): string | undefined {
+  return widgetTitles.get(type);
+}
+
 /** Resolves a widget type; unknown types (e.g. from a newer server) are skipped. */
 export function getWidgetComponent(type: string): ComponentType<WidgetProps> | undefined {
   return widgetComponents.get(type);

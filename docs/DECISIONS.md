@@ -195,3 +195,9 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 ## ADR-038 · Korrelationen rein beschreibend (2026-11-25)
 
 **Entscheidung:** Spearman-Rangkorrelation (robust gegenüber Ausreißern und Skalen 1–5), Anzeige erst ab 14 gemeinsamen Tagen, Formulierung als „an Tagen mit höherem A war B tendenziell …“ plus fester Hinweis „kein Beleg für Ursache und Wirkung“ (CLAUDE.md Regel 8).
+
+## ADR-039 · Dashboard-Layout: ausblenden statt löschen, Reihenfolge per Pfeilen (2026-11-25)
+
+**Entscheidung:** Neue Spalte `dashboard_widgets.hidden` (erste Migration nach dem Start, `0001`). `PUT /dashboard/layout` speichert Reihenfolge und Sichtbarkeit aller Widgets in einer Transaktion und verlangt die vollständige Liste (409 bei veraltetem Stand). Bedienung mit Schalter und ↑/↓ statt Drag & Drop.
+**Begründung:** Zuverlässig und barrierearm auf dem Handy, keine zusätzliche Abhängigkeit. Ausgeblendete Widgets behalten ihre Daten; neue Module erscheinen sichtbar am Ende.
+**Verifikation:** Upgrade realistisch geprüft – Datenbank der Vorversion 0.5.0 mit Daten → neue Version: Sicherung vor Migration, Daten und Sitzung erhalten.

@@ -103,8 +103,21 @@ export const widgetSchema = z.object({
   position: z.number().int(),
   size: z.enum(['sm', 'md', 'lg']),
   config: z.unknown(),
+  hidden: z.boolean(),
 });
 export type Widget = z.infer<typeof widgetSchema>;
+
+/** New dashboard layout: every widget with its position and visibility. */
+export const dashboardLayoutSchema = z.object({
+  widgets: z
+    .array(z.object({ id: z.string().min(1), hidden: z.boolean() }))
+    .max(100)
+    .refine(
+      (items) => new Set(items.map((i) => i.id)).size === items.length,
+      'Duplicate widget ids',
+    ),
+});
+export type DashboardLayout = z.infer<typeof dashboardLayoutSchema>;
 
 export const trackerDaySchema = z.object({
   tracker: trackerSchema,

@@ -123,6 +123,8 @@ export const dashboardWidgets = sqliteTable('dashboard_widgets', {
   size: text('size', { enum: ['sm', 'md', 'lg'] })
     .notNull()
     .default('md'),
+  /** Hidden widgets stay configured but are not shown on the dashboard. */
+  hidden: integer('hidden', { mode: 'boolean' }).notNull().default(false),
   config: text('config', { mode: 'json' })
     .notNull()
     .default(sql`'{}'`),

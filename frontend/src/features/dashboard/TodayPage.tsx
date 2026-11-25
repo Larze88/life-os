@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { SlidersHorizontal } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 import { isLocalDate } from '@lifeos/shared';
 import { PageHeader } from '@/components/PageHeader';
@@ -8,6 +10,7 @@ import { de } from '@/lib/i18n/de';
 import { cn } from '@/lib/utils';
 import { getWidgetComponent } from '@/modules/registry';
 import { BackupReminder } from './BackupReminder';
+import { DashboardEditSheet } from './DashboardEditSheet';
 import { DayNavigator } from './DayNavigator';
 
 function greeting(hour: number): string {
@@ -25,13 +28,22 @@ export function TodayPage() {
   const requested = params.get('tag');
   const date = requested && isLocalDate(requested) && requested <= today ? requested : today;
   const day = useDay(date);
+  const [editing, setEditing] = useState(false);
 
   const setDate = (next: string) =>
     setParams(next === today ? {} : { tag: next }, { replace: true });
 
   return (
     <>
-      <PageHeader title={date === today ? greeting(new Date().getHours()) : de.today.pastDay} />
+      <PageHeader
+        title={date === today ? greeting(new Date().getHours()) : de.today.pastDay}
+        actions={
+          <Button variant="ghost" size="sm" onClick={() => setEditing(true)}>
+            <SlidersHorizontal /> {de.dashboard.customize}
+          </Button>
+        }
+      />
+      <DashboardEditSheet open={editing} onOpenChange={setEditing} />
       <div className="-mt-3 mb-5">
         <DayNavigator date={date} today={today} onChange={setDate} />
       </div>
@@ -49,7 +61,7 @@ export function TodayPage() {
       {day.isSuccess && (
         <div className="grid gap-4 md:grid-cols-2">
           {day.data.widgets.length === 0 && (
-            <p className="text-sm text-muted-foreground">{de.today.noWidgets}</p>
+            <p className="text-sm text-muted-foreground">{de.dashboard.allHidden}</p>
           )}
           {day.data.widgets.map((widget) => {
             const Component = getWidgetComponent(widget.widgetType);

@@ -111,5 +111,6 @@ export const measurementFrontend: FrontendModule = {
     return `${formatMeasurement(v, config.decimals)} ${config.unit}`;
   },
   widgets: { 'measurements.overview': MeasurementsWidget },
+  widgetTitles: { 'measurements.overview': de.measurements.title },
   QuickActions: MeasurementQuickActions,
 };

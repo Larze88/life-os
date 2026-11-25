@@ -100,14 +100,15 @@ Beispiele: Wasser `sum ≥ 2000 / day`; Gewohnheit „Sport“ `count ≥ 3 / we
 
 ### `dashboard_widgets`
 
-| Spalte        | Typ         | Hinweis                                                                     |
-| ------------- | ----------- | --------------------------------------------------------------------------- |
-| `id`          | TEXT PK     |                                                                             |
-| `widget_type` | TEXT        | z. B. `water.progress`, `sleep.last_night`, `habits.today`, `overview.week` |
-| `tracker_id`  | TEXT NULL   | falls trackergebunden                                                       |
-| `position`    | INTEGER     | Reihenfolge                                                                 |
-| `size`        | TEXT        | `sm`, `md`, `lg`                                                            |
-| `config`      | TEXT (JSON) | widget-spezifisch                                                           |
+| Spalte        | Typ            | Hinweis                                                                     |
+| ------------- | -------------- | --------------------------------------------------------------------------- |
+| `id`          | TEXT PK        |                                                                             |
+| `widget_type` | TEXT           | z. B. `water.progress`, `sleep.last_night`, `habits.today`, `overview.week` |
+| `tracker_id`  | TEXT NULL      | falls trackergebunden                                                       |
+| `position`    | INTEGER        | Reihenfolge                                                                 |
+| `size`        | TEXT           | `sm`, `md`, `lg`                                                            |
+| `config`      | TEXT (JSON)    | widget-spezifisch                                                           |
+| `hidden`      | INTEGER (bool) | ausgeblendet (Migration `0001`, Standard sichtbar)                          |
 
 ### Migrationstabelle
 
