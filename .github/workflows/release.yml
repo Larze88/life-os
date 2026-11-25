@@ -43,6 +43,10 @@ jobs:
           file: deployment/docker/Dockerfile
           platforms: linux/arm64
           push: true
+          # Plain single-platform manifest (no attestation index) for maximum compatibility
+          # with the Home Assistant Supervisor.
+          provenance: false
+          sbom: false
           build-args: LIFEOS_VERSION=${{ steps.version.outputs.version }}
           tags: |
             ghcr.io/larze88/lifeos-aarch64:${{ steps.version.outputs.version }}
