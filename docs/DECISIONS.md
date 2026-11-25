@@ -175,3 +175,9 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 
 **Entscheidung:** Jede Messgröße ist ein Tracker (eigene Einheit, eigener Verlauf). Beschwerden sind ein einziger Tracker; der Name der Beschwerde steht im Eintrag, neue Namen werden dem Katalog hinzugefügt.
 **Begründung:** Messgrößen haben unterschiedliche Einheiten und Skalen; Beschwerden werden spontan und vielfältig erfasst und sollen ohne Verwaltungsschritt gehen.
+
+## ADR-035 · Service Worker übernimmt neue Versionen sofort (2026-11-25)
+**Kontext:** Seit der eigenen Registrierung (`injectRegister: false`, ADR-031) setzte vite-plugin-pwa `skipWaiting`/`clientsClaim` nicht mehr automatisch. Neue Versionen blieben im Zustand „waiting“, solange die installierte App irgendwo offen war – auf Android praktisch immer.
+**Entscheidung:** `workbox.skipWaiting` und `workbox.clientsClaim` werden explizit gesetzt. Der Übergang von einer Version ohne diese Einstellung wurde mit zwei echten Builds im Browser nachgestellt und geprüft (alte Version → korrigierte → nächste Version).
+**Konsequenz:** Ein Frontend-Update kann eine geöffnete Seite neu laden; ungespeicherte Formulareingaben in diesem Moment gehen verloren (selten, akzeptiert).
+

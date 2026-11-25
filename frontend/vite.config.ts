@@ -45,6 +45,11 @@ export default defineConfig({
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//],
         cleanupOutdatedCaches: true,
+        // A new version takes over immediately instead of waiting until every window of the
+        // installed app is closed (Android keeps PWAs alive in the background). Must be set
+        // explicitly because injectRegister is false (ADR-031, ADR-035).
+        skipWaiting: true,
+        clientsClaim: true,
       },
     }),
   ],
