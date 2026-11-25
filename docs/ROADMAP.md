@@ -72,8 +72,9 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 - [x] HA-App-Definition (`deployment/home-assistant/app/`) und Anleitung
 - [x] Tailscale-Knoten im Container (userspace), `tailscale serve`, keine Log-Uploads zu Tailscale
 - [x] Backup-Download, Wiederherstellung per Upload, Erinnerung nach 14 Tagen (ADR-013)
-- [ ] Öffentliches Repo `life-os-ha` anlegen und App-Definition hineinkopieren
-- [ ] Erstes Release (v0.2.0) und Image auf „public“ stellen
+- [x] Öffentliches Repo `life-os-ha` anlegen und App-Definition hineinkopieren
+- [x] Erstes Release (0.2.0) gebaut
+- [ ] Image auf „public“ stellen
 - [ ] Installation auf dem Pi, HTTPS-Prüfung, PWA-Installation auf dem Handy
 - [ ] Ressourcenmessung auf dem Pi neben HA, Restore-Test mit echten Daten
 
