@@ -141,3 +141,17 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 
 **Entscheidung:** Ein hochgeladenes Backup wird in einer temporären Kopie geprüft (`quick_check`, Tabellen, Schema-Version) und auf das aktuelle Schema migriert. Danach wird ein Snapshot des aktuellen Stands angelegt, und alle Daten-Tabellen werden per `ATTACH` in einer Transaktion ersetzt. Sitzungen werden nicht übernommen, das wiederherstellende Gerät bleibt angemeldet.
 **Begründung:** Kein Austausch der Datenbankdatei im laufenden Betrieb nötig; Fehler hinterlassen den alten Stand unverändert.
+
+## ADR-028 · Serverseitig abgeleitete Hauptwerte (2026-11-25)
+
+**Entscheidung:** Der Modulvertrag hat optional `deriveValue`. Schlaf berechnet die Dauer daraus; der Client-Wert wird ignoriert.
+**Begründung:** Eine Quelle der Wahrheit für abgeleitete Werte (keine Inkonsistenz zwischen Zeiten und Dauer). Gleiches Muster für Sport und Fokus.
+
+## ADR-029 · Gewohnheiten als eigene Tracker, Widgets über mehrere Tracker (2026-11-25)
+
+**Entscheidung:** Jede Gewohnheit ist ein Tracker des Moduls `habit` (`userTrackers: true`). Ein trackerloses Widget `habits.today` zeigt alle fälligen Gewohnheiten; Widgets erhalten dafür die ganze Tagesübersicht (`day`).
+**Begründung:** Statistik, Ziele und Export funktionieren pro Gewohnheit ohne Sonderlogik; ohne Tabellenänderung.
+
+## ADR-030 · Neue Standard-Tracker in bestehenden Installationen (2026-11-25)
+
+**Entscheidung:** Neue Module legen ihre Standard-Tracker und Widgets beim nächsten Start per Seed an (hinten angehängt). Bestehende Tracker werden nicht verändert, auch nicht umbenannte oder archivierte.

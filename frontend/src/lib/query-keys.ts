@@ -10,4 +10,5 @@ export const queryKeys = {
   day: (date: string) => ['tracking', 'day', date] as const,
   entries: (trackerId: string, from: string, to: string) =>
     ['tracking', 'entries', trackerId, from, to] as const,
+  dayEntries: (date: string) => ['tracking', 'entries', '*', date] as const,
 };

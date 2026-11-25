@@ -40,14 +40,14 @@
 - [x] Zugriff vom Handy per `tailscale serve` auf dem Windows-PC (HTTPS über `*.ts.net`, PWA installierbar)
 - Ersetzt durch den Betrieb auf dem Pi (Phase 5, vorgezogen)
 
-## Phase 3a – Erste Module
+## Phase 3a – Erste Module ✅ (2026-11-25, Version 0.3.0)
 
 In dieser Reihenfolge, jeweils mit Widget, Erfassung, Historienliste, Tests:
 
 1. ✅ **Wasser** (Schnellmengen, Tagesziel mit Historie, eigene Menge, Einträge bearbeiten/löschen)
-2. **Stimmung & Wohlbefinden**
-3. **Gewohnheiten** (Zeitpläne, Serien)
-4. **Schlaf** (Zeitraum, Aufwachtag)
+2. ✅ **Stimmung & Wohlbefinden** (Ein-Tipp-Erfassung, optional Energie/Stress/Wohlbefinden/Notiz, Tagesmittel)
+3. ✅ **Gewohnheiten** (eigene Gewohnheiten, täglich oder an Wochentagen, mehrmals pro Tag, abhaken/zurücknehmen, archivieren). Serien (Streaks) folgen mit Phase 4.
+4. ✅ **Schlaf** (Einschlaf-/Aufwachzeit, Dauer vom Server berechnet, Aufwachtag, Qualität, Ziel 7 h)
 
 Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 
@@ -74,8 +74,9 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 - [x] Backup-Download, Wiederherstellung per Upload, Erinnerung nach 14 Tagen (ADR-013)
 - [x] Öffentliches Repo `life-os-ha` anlegen und App-Definition hineinkopieren
 - [x] Erstes Release (0.2.0) gebaut
-- [ ] Image auf „public“ stellen
-- [ ] Installation auf dem Pi, HTTPS-Prüfung, PWA-Installation auf dem Handy
+- [x] Image auf „public“ stellen
+- [x] Installation auf dem Pi, HTTPS-Prüfung, PWA-Installation auf dem Handy (2026-11-25)
+- [ ] Tailscale: Key expiry für `lifeos` deaktivieren
 - [ ] Ressourcenmessung auf dem Pi neben HA, Restore-Test mit echten Daten
 
 ## Danach (Backlog, priorisierbar)

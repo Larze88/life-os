@@ -28,6 +28,15 @@ export interface ModuleDefinition<Config = unknown, Data = unknown> {
     unit?: string;
     aggregate: 'sum' | 'avg' | 'last' | 'count' | 'max';
   };
+  /**
+   * Computes the primary value on the server from the entry itself (e.g. sleep duration
+   * from start and end). If present, a value sent by the client is ignored.
+   */
+  deriveValue?: (entry: { occurredAt: string; endsAt: string | null; data: Data }) => number | null;
+  /** Whether the user can create own trackers of this module (e.g. habits). */
+  userTrackers?: boolean;
+  /** Dashboard widgets not bound to one tracker (e.g. all habits), seeded once per type. */
+  defaultWidgets?: readonly WidgetSeed[];
   /** Upgrade functions: upgrade[n] converts a payload from version n to n + 1. */
   upgrade?: Readonly<Record<number, (data: unknown) => unknown>>;
   /** Trackers created on first start (idempotent seed). */

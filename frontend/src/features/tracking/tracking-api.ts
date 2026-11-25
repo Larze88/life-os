@@ -9,6 +9,7 @@ import {
   type Goal,
   type Settings,
   type Tracker,
+  type TrackerCreate,
   type TrackerUpdate,
 } from '@lifeos/shared';
 import { api } from '@/lib/api';
@@ -45,6 +46,14 @@ export function useEntries(trackerId: string, from: string, to: string = from) {
       api<Entry[]>(`/entries?trackerId=${encodeURIComponent(trackerId)}&from=${from}&to=${to}`, {
         signal,
       }),
+  });
+}
+
+/** All entries of one logical day (every tracker). */
+export function useDayEntries(date: string) {
+  return useQuery({
+    queryKey: queryKeys.dayEntries(date),
+    queryFn: ({ signal }) => api<Entry[]>(`/entries?from=${date}&to=${date}`, { signal }),
   });
 }
 
@@ -154,6 +163,22 @@ export function useUpdateGoal() {
       effectiveFrom: string;
     }) =>
       api<Goal>(`/trackers/${trackerId}/goal`, { method: 'PUT', body: { target, effectiveFrom } }),
+    onSettled: () => client.invalidateQueries({ queryKey: queryKeys.tracking }),
+  });
+}
+
+export function useCreateTracker() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (body: TrackerCreate) => api<Tracker>('/trackers', { method: 'POST', body }),
+    onSettled: () => client.invalidateQueries({ queryKey: queryKeys.tracking }),
+  });
+}
+
+export function useArchiveTracker() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api(`/trackers/${id}/archive`, { method: 'POST' }),
     onSettled: () => client.invalidateQueries({ queryKey: queryKeys.tracking }),
   });
 }

@@ -1,11 +1,13 @@
 import type { ComponentType } from 'react';
-import type { TrackerDay, Widget } from '@lifeos/shared';
+import type { DaySummary, TrackerDay, Widget } from '@lifeos/shared';
 
 export interface WidgetProps {
   widget: Widget;
   /** The tracker the widget belongs to, with the aggregated values of `date`. */
   trackerDay: TrackerDay | undefined;
   date: string;
+  /** The whole day, for widgets that span several trackers (e.g. all habits). */
+  day: DaySummary;
 }
 
 export interface TrackerUiProps {

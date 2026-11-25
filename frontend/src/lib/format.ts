@@ -27,3 +27,23 @@ export function formatTime(iso: string): string {
 export function formatNumber(value: number): string {
   return integer.format(value);
 }
+
+/** "7 h 45 min" */
+export function formatDuration(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = Math.round(minutes % 60);
+  if (h === 0) return `${m} min`;
+  return m === 0 ? `${h} h` : `${h} h ${m} min`;
+}
+
+/** Local wall-clock instant for a logical day and a time "HH:mm". */
+export function localDateTime(localDate: string, time: string): Date {
+  return new Date(`${localDate}T${time}:00`);
+}
+
+export function formatDecimal(value: number, digits = 1): string {
+  return new Intl.NumberFormat('de-DE', {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: 0,
+  }).format(value);
+}

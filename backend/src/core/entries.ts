@@ -56,8 +56,6 @@ export function upsertEntry(
   const module = registry.require(tracker.module);
 
   const errors: Record<string, string[]> = {};
-  const value = module.valueSchema.safeParse(input.value);
-  if (!value.success) Object.assign(errors, prefix('value', zodErrorsToRecord(value.error)));
   const data = module.dataSchema.safeParse(input.data);
   if (!data.success) Object.assign(errors, prefix('data', zodErrorsToRecord(data.error)));
 
@@ -69,6 +67,16 @@ export function upsertEntry(
       errors.endsAt = ['Ende muss nach dem Beginn liegen'];
     else endsAt = new Date(input.endsAt).toISOString();
   }
+
+  // Modules like sleep compute the value themselves (e.g. duration from start/end).
+  const rawValue =
+    module.deriveValue && data.success && (module.entryKind !== 'span' || endsAt)
+      ? module.deriveValue({ occurredAt, endsAt, data: data.data })
+      : input.value;
+  const value = module.valueSchema.safeParse(rawValue);
+  if (!value.success && !errors.endsAt)
+    Object.assign(errors, prefix('value', zodErrorsToRecord(value.error)));
+
   if (Object.keys(errors).length > 0 || !value.success || !data.success) {
     throw problems.badRequest('Validation failed', errors);
   }

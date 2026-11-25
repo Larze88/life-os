@@ -3,6 +3,9 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { seedModules } from '../core/seed.ts';
 import { createTestContext, signedIn, type TestContext } from '../test/test-app.ts';
 
+/** The water tracker's day within a summary. */
+const waterOf = (summary: DaySummary) => summary.trackers.find((t) => t.tracker.key === 'water');
+
 describe('tracking API', () => {
   let ctx: TestContext;
   let cookie: string;
@@ -44,9 +47,14 @@ describe('tracking API', () => {
     });
     expect(seedModules(ctx.handle.db, ctx.services.modules)).toEqual([]);
     const summary = await day('2026-11-24');
-    expect(summary.trackers).toHaveLength(1);
-    expect(summary.trackers[0]?.goal?.target).toBe(2000);
-    expect(summary.widgets.map((w) => w.widgetType)).toEqual(['water.progress']);
+    expect(summary.trackers.map((t) => t.tracker.key)).toEqual(['water', 'mood', 'sleep']);
+    expect(waterOf(summary)?.goal?.target).toBe(2000);
+    expect(summary.widgets.map((w) => w.widgetType)).toEqual([
+      'water.progress',
+      'mood.today',
+      'sleep.last_night',
+      'habits.today',
+    ]);
   });
 
   it('creates entries idempotently under the client id', async () => {
@@ -68,8 +76,7 @@ describe('tracking API', () => {
     const updated = (await (await put(id, { ...body, value: 300 })).json()) as Entry;
     expect(updated.value).toBe(300);
 
-    const summary = await day('2026-11-24');
-    expect(summary.trackers[0]).toMatchObject({ value: 300, count: 1 });
+    expect(waterOf(await day('2026-11-24'))).toMatchObject({ value: 300, count: 1 });
   });
 
   it('computes the logical day from the device offset', async () => {
@@ -130,7 +137,7 @@ describe('tracking API', () => {
       ).status,
     ).toBe(409);
 
-    expect((await day('2026-11-24')).trackers[0]).toMatchObject({ value: 500, count: 1 });
+    expect(waterOf(await day('2026-11-24'))).toMatchObject({ value: 500, count: 1 });
     const list = (await (
       await ctx.request('GET', '/api/v1/entries?from=2026-11-24&to=2026-11-24', { cookie })
     ).json()) as Entry[];
@@ -170,20 +177,20 @@ describe('tracking API', () => {
     expect(res.status).toBe(200);
     expect(((await res.json()) as Goal).target).toBe(2500);
 
-    expect((await day('2026-11-23')).trackers[0]?.goal?.target).toBe(2000);
-    expect((await day('2026-11-24')).trackers[0]?.goal?.target).toBe(2500);
-    expect((await day('2027-01-01')).trackers[0]?.goal?.target).toBe(2500);
+    expect(waterOf(await day('2026-11-23'))?.goal?.target).toBe(2000);
+    expect(waterOf(await day('2026-11-24'))?.goal?.target).toBe(2500);
+    expect(waterOf(await day('2027-01-01'))?.goal?.target).toBe(2500);
 
     // Correcting on the same day changes the target in place, no extra history row.
     await ctx.request('PUT', `/api/v1/trackers/${water.id}/goal`, {
       cookie,
       body: { target: 3000, effectiveFrom: '2026-11-24' },
     });
-    expect((await day('2026-11-24')).trackers[0]?.goal?.target).toBe(3000);
-    expect((await day('2026-11-23')).trackers[0]?.goal?.target).toBe(2000);
-    const goalRows = ctx.handle.sqlite.prepare('SELECT COUNT(*) AS n FROM goals').get() as {
-      n: number;
-    };
+    expect(waterOf(await day('2026-11-24'))?.goal?.target).toBe(3000);
+    expect(waterOf(await day('2026-11-23'))?.goal?.target).toBe(2000);
+    const goalRows = ctx.handle.sqlite
+      .prepare('SELECT COUNT(*) AS n FROM goals WHERE tracker_id = ?')
+      .get(water.id) as { n: number };
     expect(goalRows.n).toBe(2);
   });
 

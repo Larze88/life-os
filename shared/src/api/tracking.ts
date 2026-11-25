@@ -22,6 +22,14 @@ export const trackerSchema = z.object({
 });
 export type Tracker = z.infer<typeof trackerSchema>;
 
+export const trackerCreateSchema = z.object({
+  module: z.string().min(1),
+  name: z.string().trim().min(1).max(60),
+  icon: z.string().max(40).nullable().default(null),
+  config: z.unknown().default({}),
+});
+export type TrackerCreate = z.input<typeof trackerCreateSchema>;
+
 export const trackerUpdateSchema = z
   .object({
     name: z.string().trim().min(1).max(60).optional(),

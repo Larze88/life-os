@@ -1,4 +1,7 @@
 import type { AnyModuleDefinition } from './types.ts';
+import { habitModule } from './habit/definition.ts';
+import { moodModule } from './mood/definition.ts';
+import { sleepModule } from './sleep/definition.ts';
 import { waterModule } from './water/definition.ts';
 
 export const MODULE_ID_RE = /^[a-z][a-z0-9-]{1,31}$/;
@@ -57,4 +60,9 @@ export function upgradeEntryData(
  * The registered modules. Add new modules here (one line) —
  * see CLAUDE.md "Neues Modul hinzufügen".
  */
-export const moduleRegistry = createModuleRegistry([waterModule]);
+export const moduleRegistry = createModuleRegistry([
+  waterModule,
+  moodModule,
+  sleepModule,
+  habitModule,
+]);

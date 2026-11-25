@@ -5,13 +5,21 @@ import {
   entryUpsertSchema,
   goalUpdateSchema,
   settingsSchema,
+  trackerCreateSchema,
   trackerUpdateSchema,
 } from '@lifeos/shared';
 import { getDaySummary } from '../core/days.ts';
 import { listEntries, softDeleteEntry, upsertEntry } from '../core/entries.ts';
 import { dailyGoalOn, setDailyGoalTarget } from '../core/goals.ts';
 import { getSettings, updateSettings } from '../core/settings.ts';
-import { getTrackerRow, listActiveTrackers, toTracker, updateTracker } from '../core/trackers.ts';
+import {
+  archiveTracker,
+  createTracker,
+  getTrackerRow,
+  listActiveTrackers,
+  toTracker,
+  updateTracker,
+} from '../core/trackers.ts';
 import { problems } from '../lib/problem.ts';
 import { validate } from '../lib/validate.ts';
 import { requireAuth } from '../middleware/require-auth.ts';
@@ -29,6 +37,15 @@ export const settingsRoutes = new Hono<AppEnv>()
 export const trackerRoutes = new Hono<AppEnv>()
   .use(requireAuth())
   .get('/', (c) => c.json(listActiveTrackers(c.var.services.db).map(toTracker)))
+  .post('/', validate('json', trackerCreateSchema), (c) => {
+    const { db, modules } = c.var.services;
+    return c.json(createTracker(db, modules, c.req.valid('json')), 201);
+  })
+  .post('/:id/archive', (c) => {
+    const { db, modules } = c.var.services;
+    archiveTracker(db, modules, c.req.param('id'));
+    return c.body(null, 204);
+  })
   .patch('/:id', validate('json', trackerUpdateSchema), (c) => {
     const { db, modules } = c.var.services;
     return c.json(updateTracker(db, modules, c.req.param('id'), c.req.valid('json')));

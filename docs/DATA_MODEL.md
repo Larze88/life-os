@@ -164,9 +164,17 @@ Von Drizzle verwaltet (`__drizzle_migrations`).
 
 Jedes Modul definiert ein `valueSchema` für `entries.value` (z. B. Wasser: ganze ml von 1 bis 5000; Module ohne Hauptwert: `null`). Der Server validiert `value` und `data` beim Schreiben über das Modul; Fehler kommen als `errors.value` bzw. `errors["data.<feld>"]` zurück.
 
+### Vom Server berechnete Werte
+
+Module können `deriveValue` definieren (z. B. Schlafdauer aus `occurred_at`/`ends_at`). Dann wird ein vom Client gesendeter `value` ignoriert; so bleibt der Hauptwert immer konsistent mit den Zeiten.
+
+### Eigene Tracker
+
+Module mit `userTrackers: true` (Gewohnheiten) erlauben `POST /trackers`. Der `key` wird einmalig erzeugt (`habit-<slug>-<6 Zeichen der ID>`) und nie geändert. Archivieren (`POST /trackers/:id/archive`) blendet den Tracker aus; Einträge bleiben für Historie und Export erhalten. Eingebaute Tracker (Wasser, Stimmung, Schlaf) können nicht archiviert werden.
+
 ### Seed
 
-Module liefern `defaultTrackers` inkl. `goals` (gültig ab `2000-01-01`) und `widgets`. Beim Serverstart werden fehlende Tracker angelegt. Ein vorhandener Tracker-`key` wird nie erneut angefasst, auch wenn er umbenannt oder archiviert wurde.
+Module liefern `defaultTrackers` inkl. `goals` (gültig ab `2000-01-01`) und `widgets` sowie trackerübergreifende `defaultWidgets` (z. B. `habits.today`, einmal pro Typ). Beim Serverstart werden fehlende Tracker angelegt. Ein vorhandener Tracker-`key` wird nie erneut angefasst, auch wenn er umbenannt oder archiviert wurde.
 
 ## 5. Feldtypen (`FieldDefinition`)
 

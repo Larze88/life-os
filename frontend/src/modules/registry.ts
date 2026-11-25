@@ -1,12 +1,20 @@
 import type { ComponentType } from 'react';
 import type { FrontendModule, WidgetProps } from './types';
+import { habitFrontend } from './habit';
+import { moodFrontend } from './mood';
+import { sleepFrontend } from './sleep';
 import { waterFrontend } from './water';
 
 /**
  * Registered frontend modules. Add new modules here (one line) —
  * see CLAUDE.md "Neues Modul hinzufügen".
  */
-export const frontendModules: readonly FrontendModule[] = [waterFrontend];
+export const frontendModules: readonly FrontendModule[] = [
+  waterFrontend,
+  moodFrontend,
+  sleepFrontend,
+  habitFrontend,
+];
 
 export function getFrontendModule(id: string): FrontendModule | undefined {
   return frontendModules.find((m) => m.id === id);

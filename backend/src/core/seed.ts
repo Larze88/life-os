@@ -75,6 +75,31 @@ export function seedModules(db: Db, registry: ModuleRegistry): string[] {
         }
         created.push(seed.key);
       }
+
+      // Widgets spanning several trackers of a module (e.g. all habits): one per type.
+      for (const widget of module.defaultWidgets ?? []) {
+        const exists = tx
+          .select({ id: dashboardWidgets.id })
+          .from(dashboardWidgets)
+          .where(eq(dashboardWidgets.widgetType, widget.type))
+          .get();
+        if (exists) continue;
+        const maxPos =
+          tx
+            .select({ n: sql<number | null>`max(${dashboardWidgets.position})` })
+            .from(dashboardWidgets)
+            .get()?.n ?? -1;
+        tx.insert(dashboardWidgets)
+          .values({
+            id: uuidv7(),
+            widgetType: widget.type,
+            trackerId: null,
+            size: widget.size,
+            position: maxPos + 1,
+          })
+          .run();
+        created.push(`widget:${widget.type}`);
+      }
     }
   });
   return created;

@@ -57,7 +57,7 @@ export function TodayPage() {
             const trackerDay = day.data.trackers.find((t) => t.tracker.id === widget.trackerId);
             return (
               <div key={widget.id} className={cn(sizeClass[widget.size])}>
-                <Component widget={widget} trackerDay={trackerDay} date={date} />
+                <Component widget={widget} trackerDay={trackerDay} date={date} day={day.data} />
               </div>
             );
           })}

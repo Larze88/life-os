@@ -6,7 +6,7 @@ Life OS ist eine private Single-User-PWA zum Alltags-Tracking (React/Vite/Tailwi
 
 ## Projektstand
 
-Phase 1 und 2 abgeschlossen, erstes Modul **Wasser** fertig (Vorlage für weitere Module: `shared/src/modules/water`, `frontend/src/modules/water`). Phase 5 (Pi-Deployment) ist vorgezogen und technisch fertig: Image, Release-Workflow, HA-App-Definition, Backup/Restore. Danach: Phase 3a – Stimmung, Gewohnheiten, Schlaf.
+Phasen 1, 2, 3a und das Pi-Deployment sind abgeschlossen (Version 0.3.0, läuft auf dem Raspberry Pi). Module: Wasser, Stimmung, Schlaf, Gewohnheiten. Vorlagen: `water` (Schnellmengen, Ziel), `sleep` (Zeitraum, `deriveValue`), `habit` (eigene Tracker, trackerübergreifendes Widget). Nächster Schritt: Phase 3b (Bewegung, Körperwerte, Symptome, Ernährung, Fokus, eigene Tracker) oder Phase 4 (Statistiken).
 
 ## Befehle
 
@@ -72,7 +72,7 @@ Docker-Builds in der Cloud-Sandbox: Proxy-Zertifikat nur in einer temporären Do
 
 ## Neues Modul hinzufügen
 
-1. `shared/src/modules/<id>/definition.ts` – `ModuleDefinition` (configSchema, dataSchema, valueSchema, fields, entryKind, dayAssignment, primaryValue, defaultTrackers inkl. goals/widgets); in `shared/src/modules/registry.ts` eintragen und in `shared/src/modules/index.ts` exportieren.
+1. `shared/src/modules/<id>/definition.ts` – `ModuleDefinition` (configSchema, dataSchema, valueSchema, fields, entryKind, dayAssignment, primaryValue, optional deriveValue/userTrackers/defaultWidgets, defaultTrackers inkl. goals/widgets); in `shared/src/modules/registry.ts` eintragen und in `shared/src/modules/index.ts` exportieren.
 2. Optional `backend/src/modules/<id>/` für spezielle Auswertungen; in `backend/src/modules/registry.ts` eintragen.
 3. `frontend/src/modules/<id>/index.ts` – `FrontendModule` mit `widgets` (Widget-Typ → Komponente, z. B. `'<id>.progress'`), `QuickActions`, `DetailSheet`; in `frontend/src/modules/registry.ts` eintragen. Schreiben über `useQuickAdd()` / Hooks aus `frontend/src/features/tracking/tracking-api.ts`.
 4. Default-Tracker/-Widgets über Seed-Logik (idempotent) – **keine Tabellenmigration** nötig.
