@@ -146,7 +146,9 @@ REST, JSON, versioniert unter `/api/v1`. Fehler im Format **RFC 9457** (`applica
 | `PUT /entries/:id`                                           | Eintrag anlegen **oder** aktualisieren (idempotent, ID vom Client, UUIDv7) |
 | `DELETE /entries/:id`                                        | Soft Delete                                                                |
 | `GET /days/:date`                                            | Tageszusammenfassung aller Tracker (Dashboard)                             |
-| `GET /stats/:trackerId?period=week&from=&to=`                | Aggregationen                                                              |
+| `GET /stats/series?trackerId=&from=&to=`                     | Tageswerte, Kennzahlen, Serien                                             |
+| `GET /history?from=&to=`                                     | Tage mit Einträgen (Verlauf)                                               |
+| `GET /dashboard`, `PUT /dashboard/layout`                    | Dashboard-Anordnung                                                        |
 | `GET /stats/correlation?a=&b=&from=&to=`                     | Beschreibende Korrelation (Phase 4)                                        |
 | `GET/PUT /goals`, `GET/PUT /settings`, `GET/PUT /dashboard`  | Konfiguration                                                              |
 | `GET /export?format=json                                     | csv`                                                                       | Datenexport |
