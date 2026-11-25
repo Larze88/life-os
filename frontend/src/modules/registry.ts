@@ -1,6 +1,11 @@
 import type { ComponentType } from 'react';
 import type { FrontendModule, WidgetProps } from './types';
+import { activityFrontend } from './activity';
+import { focusFrontend } from './focus';
 import { habitFrontend } from './habit';
+import { mealFrontend } from './meal';
+import { measurementFrontend } from './measurement';
+import { symptomFrontend } from './symptom';
 import { moodFrontend } from './mood';
 import { sleepFrontend } from './sleep';
 import { waterFrontend } from './water';
@@ -14,6 +19,11 @@ export const frontendModules: readonly FrontendModule[] = [
   moodFrontend,
   sleepFrontend,
   habitFrontend,
+  activityFrontend,
+  mealFrontend,
+  measurementFrontend,
+  symptomFrontend,
+  focusFrontend,
 ];
 
 export function getFrontendModule(id: string): FrontendModule | undefined {

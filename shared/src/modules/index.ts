@@ -4,3 +4,8 @@ export * from './water/definition.ts';
 export * from './mood/definition.ts';
 export * from './sleep/definition.ts';
 export * from './habit/definition.ts';
+export * from './activity/definition.ts';
+export * from './measurement/definition.ts';
+export * from './symptom/definition.ts';
+export * from './focus/definition.ts';
+export * from './meal/definition.ts';

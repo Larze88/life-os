@@ -62,6 +62,11 @@ describe('habit module', () => {
 
 describe('registry', () => {
   it('contains all phase 3a modules', () => {
-    expect(moduleRegistry.all.map((m) => m.id)).toEqual(['water', 'mood', 'sleep', 'habit']);
+    expect(moduleRegistry.all.map((m) => m.id).slice(0, 4)).toEqual([
+      'water',
+      'mood',
+      'sleep',
+      'habit',
+    ]);
   });
 });

@@ -173,13 +173,17 @@ describe('phase 3a modules', () => {
     ctx.handle.sqlite.prepare("DELETE FROM trackers WHERE key != 'water'").run();
     ctx.handle.sqlite.prepare("UPDATE trackers SET name = 'Trinken' WHERE key = 'water'").run();
 
-    expect(seedModules(ctx.handle.db, ctx.services.modules)).toEqual([
+    expect(seedModules(ctx.handle.db, ctx.services.modules).slice(0, 3)).toEqual([
       'mood',
       'sleep',
       'widget:habits.today',
     ]);
     const summary = await day('2026-11-24');
-    expect(summary.trackers.map((t) => t.tracker.name)).toEqual(['Trinken', 'Stimmung', 'Schlaf']);
+    expect(summary.trackers.map((t) => t.tracker.name).slice(0, 3)).toEqual([
+      'Trinken',
+      'Stimmung',
+      'Schlaf',
+    ]);
     expect(summary.widgets[0]?.widgetType).toBe('water.progress');
   });
 });

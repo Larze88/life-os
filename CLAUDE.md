@@ -6,7 +6,7 @@ Life OS ist eine private Single-User-PWA zum Alltags-Tracking (React/Vite/Tailwi
 
 ## Projektstand
 
-Phasen 1, 2, 3a und das Pi-Deployment sind abgeschlossen (Version 0.3.0, läuft auf dem Raspberry Pi). Module: Wasser, Stimmung, Schlaf, Gewohnheiten. Vorlagen: `water` (Schnellmengen, Ziel), `sleep` (Zeitraum, `deriveValue`), `habit` (eigene Tracker, trackerübergreifendes Widget). Nächster Schritt: Phase 3b (Bewegung, Körperwerte, Symptome, Ernährung, Fokus, eigene Tracker) oder Phase 4 (Statistiken).
+Phasen 1, 2, 3a, 3b und das Pi-Deployment sind abgeschlossen (Version 0.4.0, läuft auf dem Raspberry Pi). Module: Wasser, Stimmung, Schlaf, Gewohnheiten, Bewegung, Ernährung, Körperwerte, Beschwerden, Fokus. Vorlagen: `water` (Schnellmengen, Ziel), `sleep` (Zeitraum, `deriveValue`), `habit`/`measurement` (eigene Tracker, trackerübergreifendes Widget), `focus` (Timer). Gemeinsame UI-Bausteine: `frontend/src/components/tracking/` (ModuleSheet, EntryList, WidgetHeader, DurationPicker), `ChipGroup`, `ScalePicker`. Offen: eigene Tracker (`custom`), Phase 4 (Statistiken), anpassbares Dashboard.
 
 ## Befehle
 
@@ -46,6 +46,10 @@ docker compose -f deployment/docker/docker-compose.yml up --build   # optional, 
 4. Datenbank-Änderungen sind sicher: Migration beim Start mit vorherigem Snapshot.
 
 Docker-Builds in der Cloud-Sandbox: Proxy-Zertifikat nur in einer temporären Dockerfile-Kopie einbinden, nie ins Repository.
+
+## Arbeitsweise bei Textersetzungen
+
+Prettier formatiert Dateien um (Zeilenumbrüche, Anführungszeichen). Skriptbasierte Ersetzungen deshalb immer mit Prüfung (`assert old in s`) – stille Fehlschläge sind hier mehrfach passiert.
 
 ## Nicht verhandelbare Regeln
 

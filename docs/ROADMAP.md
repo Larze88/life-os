@@ -51,9 +51,14 @@ In dieser Reihenfolge, jeweils mit Widget, Erfassung, Historienliste, Tests:
 
 Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 
-## Phase 3b – Weitere Module
+## Phase 3b – Weitere Module ✅ (2026-11-25, Version 0.4.0, ohne eigene Tracker)
 
-5. Sport & Bewegung · 6. Körperwerte · 7. Gesundheit & Symptome · 8. Ernährung · 9. Produktivität & Fokus · 10. Eigene Tracker (`custom`, Feld-Editor)
+- [x] Bewegung (Sportart, Dauer, Intensität, Distanz; Ziel 30 min/Tag)
+- [x] Körperwerte (Gewicht, Ruhepuls; eigene Messwerte mit Einheit und optionalem Zweitwert; Verlauf)
+- [x] Beschwerden (erweiterbarer Katalog, Stärke 1–10, Notiz)
+- [x] Ernährung (Mahlzeit per Tipp, Beschreibung, Merkmale)
+- [x] Fokus (Timer oder manuell, Konzentration, Produktivität, Aufgabe)
+- [ ] Eigene Tracker (`custom`, Feld-Editor) → eigener Schritt
 
 ## Phase 4 – Statistiken
 

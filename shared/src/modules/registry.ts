@@ -1,5 +1,10 @@
 import type { AnyModuleDefinition } from './types.ts';
+import { activityModule } from './activity/definition.ts';
+import { focusModule } from './focus/definition.ts';
 import { habitModule } from './habit/definition.ts';
+import { mealModule } from './meal/definition.ts';
+import { measurementModule } from './measurement/definition.ts';
+import { symptomModule } from './symptom/definition.ts';
 import { moodModule } from './mood/definition.ts';
 import { sleepModule } from './sleep/definition.ts';
 import { waterModule } from './water/definition.ts';
@@ -65,4 +70,9 @@ export const moduleRegistry = createModuleRegistry([
   moodModule,
   sleepModule,
   habitModule,
+  activityModule,
+  mealModule,
+  measurementModule,
+  symptomModule,
+  focusModule,
 ]);

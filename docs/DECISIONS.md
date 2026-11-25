@@ -157,6 +157,21 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 **Entscheidung:** Neue Module legen ihre Standard-Tracker und Widgets beim nächsten Start per Seed an (hinten angehängt). Bestehende Tracker werden nicht verändert, auch nicht umbenannte oder archivierte.
 
 ## ADR-031 · Aktive Update-Prüfung der PWA (2026-11-25)
+
 **Kontext:** Die installierte App auf Android bleibt oft im Hintergrund aktiv und wird nie neu geladen; neue Versionen kamen dadurch nicht an.
 **Entscheidung:** Der Service Worker sucht beim Zurückkehren in den Vordergrund und alle 30 Minuten nach Updates (`registration.update()`); `autoUpdate` aktiviert und lädt dann neu. Zusätzlich vergleicht ein Hinweis-Banner die Build-Version des Frontends mit der Server-Version (`/health`) und bietet „Neu laden“ an.
 
+## ADR-032 · Dauer-Module als Zeitpunkt statt Zeitraum (2026-11-25)
+
+**Entscheidung:** Bewegung und Fokus speichern einen Zeitpunkt (Beginn bzw. Erfassung) und die Dauer als Hauptwert, nicht Start und Ende.
+**Begründung:** Man erfasst meist im Nachhinein „30 min Laufen“; Start/Ende wäre zusätzlicher Aufwand ohne Mehrwert für die Auswertung. Schlaf bleibt ein Zeitraum, weil Uhrzeiten dort selbst aussagekräftig sind.
+
+## ADR-033 · Fokus-Timer im Gerätespeicher (2026-11-25)
+
+**Entscheidung:** Ein laufender Fokus-Timer speichert nur seine Startzeit in `localStorage` des Geräts; erst „Stoppen & speichern“ legt einen Eintrag an.
+**Konsequenz:** Ein Timer läuft pro Gerät; geht der Speicher verloren, geht nur die laufende Messung verloren.
+
+## ADR-034 · Körperwerte als eigene Tracker, Beschwerden als ein Tracker mit Katalog (2026-11-25)
+
+**Entscheidung:** Jede Messgröße ist ein Tracker (eigene Einheit, eigener Verlauf). Beschwerden sind ein einziger Tracker; der Name der Beschwerde steht im Eintrag, neue Namen werden dem Katalog hinzugefügt.
+**Begründung:** Messgrößen haben unterschiedliche Einheiten und Skalen; Beschwerden werden spontan und vielfältig erfasst und sollen ohne Verwaltungsschritt gehen.

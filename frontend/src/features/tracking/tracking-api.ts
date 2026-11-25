@@ -46,6 +46,8 @@ export function useEntries(trackerId: string, from: string, to: string = from) {
       api<Entry[]>(`/entries?trackerId=${encodeURIComponent(trackerId)}&from=${from}&to=${to}`, {
         signal,
       }),
+    // An empty id means "not needed right now" (e.g. a closed sheet) — don't fetch.
+    enabled: trackerId !== '',
   });
 }
 

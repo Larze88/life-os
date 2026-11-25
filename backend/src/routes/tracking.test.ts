@@ -47,13 +47,28 @@ describe('tracking API', () => {
     });
     expect(seedModules(ctx.handle.db, ctx.services.modules)).toEqual([]);
     const summary = await day('2026-11-24');
-    expect(summary.trackers.map((t) => t.tracker.key)).toEqual(['water', 'mood', 'sleep']);
+    expect(summary.trackers.map((t) => t.tracker.key)).toEqual([
+      'water',
+      'mood',
+      'sleep',
+      'activity',
+      'meals',
+      'weight',
+      'resting-pulse',
+      'symptoms',
+      'focus',
+    ]);
     expect(waterOf(summary)?.goal?.target).toBe(2000);
     expect(summary.widgets.map((w) => w.widgetType)).toEqual([
       'water.progress',
       'mood.today',
       'sleep.last_night',
       'habits.today',
+      'activity.today',
+      'meals.today',
+      'measurements.overview',
+      'symptoms.today',
+      'focus.today',
     ]);
   });
 
