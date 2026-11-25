@@ -8,7 +8,7 @@ import { requestLog } from './middleware/request-log.ts';
 import { authRoutes } from './routes/auth.ts';
 import { backupRoutes } from './routes/backups.ts';
 import { healthRoutes } from './routes/health.ts';
-import { statsRoutes } from './routes/stats.ts';
+import { historyRoutes, statsRoutes } from './routes/stats.ts';
 import {
   dashboardRoutes,
   dayRoutes,
@@ -59,7 +59,8 @@ export function createApp(services: AppServices) {
     .route('/days', dayRoutes)
     .route('/dashboard', dashboardRoutes)
     .route('/backups', backupRoutes)
-    .route('/stats', statsRoutes);
+    .route('/stats', statsRoutes)
+    .route('/history', historyRoutes);
 
   app.route(API_PREFIX, api);
   app.all(`${API_PREFIX}/*`, () => {

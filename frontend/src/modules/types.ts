@@ -28,6 +28,11 @@ export interface FrontendModule {
   widgetTitles?: Record<string, string>;
   /** Compact one-tap actions, shown in the quick-add sheet. */
   QuickActions?: ComponentType<TrackerUiProps>;
+  /**
+   * One-line summary of a tracker's day in the history (default: "<name> <formatValue>"),
+   * e.g. "✓ Meditieren" or "2 Mahlzeiten".
+   */
+  formatDay?: (day: { value: number | null; count: number }, tracker: Tracker) => string;
   /** Formats a (daily aggregated) primary value for statistics, e.g. "7 h 45 min". */
   formatValue?: (value: number, tracker: Tracker) => string;
   /** Full view for a tracker on a day: entries, editing, settings. */

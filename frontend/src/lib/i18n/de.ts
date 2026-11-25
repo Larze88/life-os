@@ -80,7 +80,13 @@ export const de = {
   },
   history: {
     title: 'Verlauf',
-    empty: 'Hier siehst du später alle Einträge Tag für Tag.',
+    empty: 'Noch keine Einträge. Sobald du etwas erfasst, erscheint es hier Tag für Tag.',
+    open: (day: string) => `${day} öffnen`,
+    today: 'Heute',
+    yesterday: 'Gestern',
+    loadMore: 'Ältere Tage laden',
+    noMore: 'Keine älteren Einträge.',
+    emptyRange: 'In den letzten zwei Wochen keine Einträge.',
   },
   stats: {
     title: 'Statistik',

@@ -59,3 +59,21 @@ export const correlationSchema = z.object({
   pairs: z.array(z.object({ date: localDate, a: z.number(), b: z.number() })),
 });
 export type Correlation = z.infer<typeof correlationSchema>;
+
+/** History: days with entries, newest first (GET /history). */
+export const historyQuerySchema = z.object({ from: localDate, to: localDate });
+
+export const historyDaySchema = z.object({
+  date: localDate,
+  trackers: z.array(
+    z.object({ trackerId: z.string(), value: z.number().nullable(), count: z.number().int() }),
+  ),
+});
+export type HistoryDay = z.infer<typeof historyDaySchema>;
+
+export const historySchema = z.object({
+  days: z.array(historyDaySchema),
+  /** Whether older entries exist before `from` (for "load older days"). */
+  hasMoreBefore: z.boolean(),
+});
+export type History = z.infer<typeof historySchema>;

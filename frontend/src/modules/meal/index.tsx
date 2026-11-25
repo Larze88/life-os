@@ -193,6 +193,7 @@ function MealWidget({ trackerDay, date }: WidgetProps) {
 
 export const mealFrontend: FrontendModule = {
   id: 'meal',
+  formatDay: ({ count }) => de.meals.count(count),
   formatValue: (v) => formatDecimal(v),
   widgets: { 'meals.today': MealWidget },
   QuickActions: MealQuickActions,

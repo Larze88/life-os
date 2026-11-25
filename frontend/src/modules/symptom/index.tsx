@@ -223,6 +223,8 @@ function SymptomQuickActions({ trackerDay, date }: TrackerUiProps) {
 
 export const symptomFrontend: FrontendModule = {
   id: 'symptom',
+  formatDay: ({ value, count }, tracker) =>
+    `${tracker.name}: ${de.symptoms.count(count)}${value ? ` (${de.symptoms.strongest(value)})` : ''}`,
   formatValue: (v) => `${formatDecimal(v)}/10`,
   widgets: { 'symptoms.today': SymptomWidget },
   QuickActions: SymptomQuickActions,

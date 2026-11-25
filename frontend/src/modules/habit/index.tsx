@@ -12,6 +12,8 @@ function HabitQuickActions({ trackerDay, date }: TrackerUiProps) {
 
 export const habitFrontend: FrontendModule = {
   id: 'habit',
+  formatDay: ({ count }, tracker) =>
+    count > 1 ? `✓ ${tracker.name} ×${count}` : `✓ ${tracker.name}`,
   formatValue: (v) => `${formatDecimal(v)}×`,
   widgets: { 'habits.today': HabitsWidget },
   widgetTitles: { 'habits.today': de.habits.title },

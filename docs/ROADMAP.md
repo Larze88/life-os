@@ -67,7 +67,8 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 - [x] Kennzahlen: Ø pro Tag, höchster/niedrigster Tag, Tage mit Einträgen, Ziel erreicht x von y, Serie (aktuell/beste), Vergleich mit dem vorherigen Zeitraum
 - [x] Gewohnheits-Serien nur über fällige Tage; der laufende Tag zählt nicht als verpasst
 - [x] Zusammenhänge: Spearman-Rangkorrelation zweier Tracker, optional mit Folgetag, Streudiagramm, beschreibender Text, Mindestens 14 gemeinsame Tage
-- [ ] Verlauf-Seite (Tagesliste), Kalender-Heatmap für Gewohnheiten, Detailfelder (z. B. Energie) als eigene Metriken
+- [x] Verlauf-Seite: Tage mit Einträgen (neueste zuerst), Tageszeile je Tracker, 14 Tage pro Seite, Tag öffnen → Dashboard (Version 0.7.0)
+- [ ] Kalender-Heatmap für Gewohnheiten, Detailfelder (z. B. Energie) als eigene Metriken
 
 ## Phase 5 – Deployment auf dem Raspberry Pi (vorgezogen, ADR-023)
 
