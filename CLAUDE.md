@@ -6,7 +6,7 @@ Life OS ist eine private Single-User-PWA zum Alltags-Tracking (React/Vite/Tailwi
 
 ## Projektstand
 
-Phasen 1, 2, 3a, 3b und das Pi-Deployment sind abgeschlossen (Version 0.4.0, läuft auf dem Raspberry Pi). Module: Wasser, Stimmung, Schlaf, Gewohnheiten, Bewegung, Ernährung, Körperwerte, Beschwerden, Fokus. Vorlagen: `water` (Schnellmengen, Ziel), `sleep` (Zeitraum, `deriveValue`), `habit`/`measurement` (eigene Tracker, trackerübergreifendes Widget), `focus` (Timer). Gemeinsame UI-Bausteine: `frontend/src/components/tracking/` (ModuleSheet, EntryList, WidgetHeader, DurationPicker), `ChipGroup`, `ScalePicker`. Offen: eigene Tracker (`custom`), Phase 4 (Statistiken), anpassbares Dashboard.
+Phasen 1, 2, 3a, 3b, 4 (Statistiken) und das Pi-Deployment sind abgeschlossen (Version 0.5.0, läuft auf dem Raspberry Pi). Module: Wasser, Stimmung, Schlaf, Gewohnheiten, Bewegung, Ernährung, Körperwerte, Beschwerden, Fokus. Vorlagen: `water` (Schnellmengen, Ziel), `sleep` (Zeitraum, `deriveValue`), `habit`/`measurement` (eigene Tracker, trackerübergreifendes Widget), `focus` (Timer). Gemeinsame UI-Bausteine: `frontend/src/components/tracking/` (ModuleSheet, EntryList, WidgetHeader, DurationPicker), `ChipGroup`, `ScalePicker`. Statistik: `backend/src/core/stats.ts`, `frontend/src/features/stats/` (eigene SVG-Diagramme). Offen: anpassbares Dashboard, eigene Tracker (`custom`), Verlauf-Seite.
 
 ## Befehle
 

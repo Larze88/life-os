@@ -177,7 +177,21 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 **Begründung:** Messgrößen haben unterschiedliche Einheiten und Skalen; Beschwerden werden spontan und vielfältig erfasst und sollen ohne Verwaltungsschritt gehen.
 
 ## ADR-035 · Service Worker übernimmt neue Versionen sofort (2026-11-25)
+
 **Kontext:** Seit der eigenen Registrierung (`injectRegister: false`, ADR-031) setzte vite-plugin-pwa `skipWaiting`/`clientsClaim` nicht mehr automatisch. Neue Versionen blieben im Zustand „waiting“, solange die installierte App irgendwo offen war – auf Android praktisch immer.
 **Entscheidung:** `workbox.skipWaiting` und `workbox.clientsClaim` werden explizit gesetzt. Der Übergang von einer Version ohne diese Einstellung wurde mit zwei echten Builds im Browser nachgestellt und geprüft (alte Version → korrigierte → nächste Version).
 **Konsequenz:** Ein Frontend-Update kann eine geöffnete Seite neu laden; ungespeicherte Formulareingaben in diesem Moment gehen verloren (selten, akzeptiert).
 
+## ADR-036 · Fehlende Tage zählen nur bei Mengen-Modulen als 0 (2026-11-25)
+
+**Kontext:** Ein Tag ohne Wasser-Eintrag bedeutet 0 ml, eine nicht eingetragene Nacht aber nicht 0 Stunden Schlaf. Eine pauschale Null-Füllung verfälschte Durchschnitte, Zielquoten und Korrelationen.
+**Entscheidung:** `isZeroWhenMissing` (shared) – nur Aggregat `sum`/`count` mit `entryKind = instant`. Gilt identisch im Server und in der App. Tracking beginnt mit dem ersten Eintrag; für Korrelationen wird nur zwischen erstem und letztem Eintrag aufgefüllt.
+
+## ADR-037 · Eigene SVG-Diagramme statt Recharts (2026-11-25)
+
+**Entscheidung:** Balken-, Linien- und Streudiagramm als schlanke eigene SVG-Komponenten.
+**Begründung:** Bundle-Größe (Recharts ~100 KB gzip), Touch-Auswahl mit Werteanzeige über dem Diagramm statt schwebender Tooltips, Modulfarben direkt aus Design-Tokens. Gestaltung nach den Datenvisualisierungs-Regeln: eine Achse, dezentes Raster, 4-px-Rundung, 2-px-Linien, Tabelle als Alternative.
+
+## ADR-038 · Korrelationen rein beschreibend (2026-11-25)
+
+**Entscheidung:** Spearman-Rangkorrelation (robust gegenüber Ausreißern und Skalen 1–5), Anzeige erst ab 14 gemeinsamen Tagen, Formulierung als „an Tagen mit höherem A war B tendenziell …“ plus fester Hinweis „kein Beleg für Ursache und Wirkung“ (CLAUDE.md Regel 8).

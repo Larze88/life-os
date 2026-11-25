@@ -106,6 +106,10 @@ function MeasurementQuickActions({ trackerDay, date }: TrackerUiProps) {
 
 export const measurementFrontend: FrontendModule = {
   id: 'measurement',
+  formatValue: (v, tracker) => {
+    const config = measurementConfig(tracker);
+    return `${formatMeasurement(v, config.decimals)} ${config.unit}`;
+  },
   widgets: { 'measurements.overview': MeasurementsWidget },
   QuickActions: MeasurementQuickActions,
 };

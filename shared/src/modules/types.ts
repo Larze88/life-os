@@ -33,6 +33,11 @@ export interface ModuleDefinition<Config = unknown, Data = unknown> {
    * from start and end). If present, a value sent by the client is ignored.
    */
   deriveValue?: (entry: { occurredAt: string; endsAt: string | null; data: Data }) => number | null;
+  /**
+   * Per-day completion rule for modules without goals (e.g. habits): whether the tracker
+   * is due on a day and how many entries complete it. Used for "met" days and streaks.
+   */
+  dailyCompletion?: (config: Config, date: string) => { due: boolean; target: number };
   /** Whether the user can create own trackers of this module (e.g. habits). */
   userTrackers?: boolean;
   /** Dashboard widgets not bound to one tracker (e.g. all habits), seeded once per type. */

@@ -42,5 +42,9 @@ export const habitModule: ModuleDefinition<HabitConfig, HabitData> = {
   dayAssignment: 'start',
   primaryValue: { label: 'Erledigt', aggregate: 'count' },
   userTrackers: true,
+  dailyCompletion: (config, date) => ({
+    due: isHabitDue(config, date),
+    target: config.targetPerDay,
+  }),
   defaultWidgets: [{ type: 'habits.today', size: 'md' }],
 };

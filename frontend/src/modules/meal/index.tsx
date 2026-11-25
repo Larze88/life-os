@@ -16,6 +16,7 @@ import { entryMomentFor } from '@/lib/entry-time';
 import { de } from '@/lib/i18n/de';
 import { cn } from '@/lib/utils';
 import type { FrontendModule, TrackerUiProps, WidgetProps } from '../types';
+import { formatDecimal } from '@/lib/format';
 
 const ACCENT = 'bg-meal text-white';
 type MealType = (typeof MEAL_TYPES)[number]['value'];
@@ -192,6 +193,7 @@ function MealWidget({ trackerDay, date }: WidgetProps) {
 
 export const mealFrontend: FrontendModule = {
   id: 'meal',
+  formatValue: (v) => formatDecimal(v),
   widgets: { 'meals.today': MealWidget },
   QuickActions: MealQuickActions,
 };

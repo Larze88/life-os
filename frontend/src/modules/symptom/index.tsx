@@ -21,6 +21,7 @@ import { entryMomentFor } from '@/lib/entry-time';
 import { de } from '@/lib/i18n/de';
 import { cn } from '@/lib/utils';
 import type { FrontendModule, TrackerUiProps, WidgetProps } from '../types';
+import { formatDecimal } from '@/lib/format';
 
 const ACCENT = 'bg-symptom text-white';
 
@@ -222,6 +223,7 @@ function SymptomQuickActions({ trackerDay, date }: TrackerUiProps) {
 
 export const symptomFrontend: FrontendModule = {
   id: 'symptom',
+  formatValue: (v) => `${formatDecimal(v)}/10`,
   widgets: { 'symptoms.today': SymptomWidget },
   QuickActions: SymptomQuickActions,
 };

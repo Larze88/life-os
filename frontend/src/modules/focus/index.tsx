@@ -281,6 +281,7 @@ function FocusWidget({ trackerDay, date }: WidgetProps) {
 
 export const focusFrontend: FrontendModule = {
   id: 'focus',
+  formatValue: (v) => formatDuration(Math.round(v)),
   widgets: { 'focus.today': FocusWidget },
   QuickActions: FocusActions,
 };

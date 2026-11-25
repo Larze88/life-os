@@ -202,12 +202,15 @@ Gemeinsame Optionen: `key` (unveränderlich), `label`, `required`, `help`, `depr
 4. Payload-Änderungen: neue Felder optional hinzufügen (kein Versionssprung nötig). Strukturänderungen → `version` im Modul erhöhen + `upgrade[n]`-Funktion; alte Einträge werden beim Lesen hochgestuft (optional später per Skript dauerhaft).
 5. Neue Module benötigen **keine** Tabellenänderung.
 
-## 7. Auswertungen
+## 7. Auswertungen (umgesetzt in Phase 4)
 
-- Generische Aggregation über `value` je `local_date` (`SUM`, `AVG`, `COUNT`, `MAX`, letzter Wert) → deckt Tages-/Wochen-/Monats-/Jahresansichten für alle Module ab.
-- **Tagesmetriken** als einheitliche Zwischenform `(local_date, metric_key, value)` – Grundlage für Zeitraumvergleiche und Korrelationen. Metriken wie `sleep.duration`, `mood.avg`, `water.sum`, `activity.minutes`.
-- Korrelation (Phase 4): Spearman-Rangkorrelation über gemeinsame Tage, optional mit Versatz (Schlaf der Nacht → Stimmung desselben Tages, Sport Tag t → Schlaf Nacht t+1). Ausgabe immer mit `n`, Zeitraum und neutralem Hinweistext. Mindest-`n` (z. B. 14) bevor ein Wert angezeigt wird.
-- Bei der erwarteten Datenmenge (einige Tausend Einträge pro Jahr) reichen Ad-hoc-SQL-Abfragen; materialisierte Tageswerte erst bei Bedarf.
+- **Tageswert** = Modul-Aggregat (`sum`, `avg`, `max`, `last`, `count`) der Einträge eines `local_date`; berechnet in `backend/src/core/stats.ts`.
+- **Fehlende Tage** (ADR-036): Nur bei Mengen-Modulen ohne Zeitraum (`isZeroWhenMissing`: Aggregat `sum`/`count` und `entryKind = instant` – Wasser, Bewegung, Fokus, Gewohnheiten, Mahlzeiten) zählt ein Tag ohne Eintrag als 0. Bei Schlaf, Stimmung, Körperwerten, Beschwerden bedeutet er „nicht erfasst“.
+- **Beginn des Trackings** ist der erste Tag mit einem Eintrag; davor gibt es weder „verpasste“ Tage noch Nullwerte.
+- **Ziel/Erledigung je Tag** (`met`): Module mit `dailyCompletion` (Gewohnheiten: fällig? Anzahl ≥ Ziel pro Tag), sonst das an diesem Tag gültige Tagesziel (historisiert). `null` = nicht bewertet.
+- **Serie**: aufeinanderfolgende erfüllte bewertete Tage; ein noch nicht erfüllter letzter Tag (heute) unterbricht die Serie nicht.
+- **Ø pro Tag**: bei Mengen-Modulen Summe ÷ getrackte Tage im Zeitraum, sonst Mittel der Tage mit Daten.
+- **Zusammenhänge**: Spearman-Rangkorrelation über gemeinsame Tage, optional B um einen Tag versetzt. Nullen für Mengen-Module nur zwischen erstem und letztem Eintrag. Wert erst ab 14 gemeinsamen Tagen (`CORRELATION_MIN_DAYS`), immer mit `n` und dem Hinweis „kein Beleg für Ursache und Wirkung“.
 
 ## 8. Export-Format
 

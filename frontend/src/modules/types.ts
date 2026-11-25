@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import type { DaySummary, TrackerDay, Widget } from '@lifeos/shared';
+import type { DaySummary, Tracker, TrackerDay, Widget } from '@lifeos/shared';
 
 export interface WidgetProps {
   widget: Widget;
@@ -26,6 +26,8 @@ export interface FrontendModule {
   widgets: Record<string, ComponentType<WidgetProps>>;
   /** Compact one-tap actions, shown in the quick-add sheet. */
   QuickActions?: ComponentType<TrackerUiProps>;
+  /** Formats a (daily aggregated) primary value for statistics, e.g. "7 h 45 min". */
+  formatValue?: (value: number, tracker: Tracker) => string;
   /** Full view for a tracker on a day: entries, editing, settings. */
   DetailSheet?: ComponentType<
     TrackerUiProps & { open: boolean; onOpenChange: (open: boolean) => void }

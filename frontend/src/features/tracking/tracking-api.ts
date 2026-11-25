@@ -32,6 +32,13 @@ export function useToday(): string {
   return todayLocalDate(new Date(), useDayStart());
 }
 
+export function useTrackers() {
+  return useQuery({
+    queryKey: ['tracking', 'trackers'] as const,
+    queryFn: ({ signal }) => api<Tracker[]>('/trackers', { signal }),
+  });
+}
+
 export function useDay(date: string) {
   return useQuery({
     queryKey: queryKeys.day(date),

@@ -60,14 +60,14 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 - [x] Fokus (Timer oder manuell, Konzentration, Produktivität, Aufgabe)
 - [ ] Eigene Tracker (`custom`, Feld-Editor) → eigener Schritt
 
-## Phase 4 – Statistiken
+## Phase 4 – Statistiken ✅ (2026-11-25, Version 0.5.0)
 
-- Detailseite je Tracker: Woche/Monat/Jahr, Durchschnitt, Min/Max, Zielerreichung
-- Zeitraumvergleich
-- Kalender-Heatmap für Gewohnheiten
-- Tagesmetriken + Korrelationsansicht (Spearman, `n`, neutraler Hinweis)
-- Export JSON/CSV in der UI
-- Backup-Download (konsistenter SQLite-Snapshot) + Restore per Upload + Erinnerung „letzter Download vor X Tagen“ (wird ggf. schon in Phase 2 vorgezogen)
+- [x] `GET /stats/series`: Tageswerte je Tracker (Modul-Aggregat), Ziel/Erledigung je Tag (historisierte Ziele), Kennzahlen, Serien
+- [x] Statistik-Seite: Tracker- und Zeitraumwahl (7/30/90/365 Tage), Balken- bzw. Liniendiagramm mit Ziellinie und Antipp-Werteanzeige, Wochen-/Monatswerte bei langen Zeiträumen, Werte als Tabelle
+- [x] Kennzahlen: Ø pro Tag, höchster/niedrigster Tag, Tage mit Einträgen, Ziel erreicht x von y, Serie (aktuell/beste), Vergleich mit dem vorherigen Zeitraum
+- [x] Gewohnheits-Serien nur über fällige Tage; der laufende Tag zählt nicht als verpasst
+- [x] Zusammenhänge: Spearman-Rangkorrelation zweier Tracker, optional mit Folgetag, Streudiagramm, beschreibender Text, Mindestens 14 gemeinsame Tage
+- [ ] Verlauf-Seite (Tagesliste), Kalender-Heatmap für Gewohnheiten, Detailfelder (z. B. Energie) als eigene Metriken
 
 ## Phase 5 – Deployment auf dem Raspberry Pi (vorgezogen, ADR-023)
 

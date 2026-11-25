@@ -61,6 +61,7 @@ function ActivityQuickActions({ trackerDay, date }: TrackerUiProps) {
 
 export const activityFrontend: FrontendModule = {
   id: 'activity',
+  formatValue: (v) => formatDuration(Math.round(v)),
   widgets: { 'activity.today': ActivityWidget },
   QuickActions: ActivityQuickActions,
 };

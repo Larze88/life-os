@@ -28,27 +28,27 @@
 
 ## 2. Technologie-Stack
 
-| Schicht           | Wahl                                                        | Begründung                                                                |
-| ----------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Runtime           | **Node.js 24 LTS**                                          | Aktuelle LTS, ARM64 offiziell unterstützt                                 |
-| Sprache           | **TypeScript (strict)** überall                             | Gemeinsame Typen Frontend/Backend                                         |
-| Monorepo          | **npm Workspaces** (`shared`, `backend`, `frontend`)        | Keine zusätzliche Tooling-Abhängigkeit (pnpm/turbo unnötig bei 3 Paketen) |
-| Validierung       | **Zod** (in `shared`)                                       | Eine Schemaquelle für API, Formulare und DB-JSON                          |
-| Backend-Framework | **Hono** + `@hono/node-server`                              | Klein, schnell, Web-Standards, gute TS-Typen, Zod-Validator               |
-| Datenbank         | **SQLite** via **better-sqlite3**                           | Synchron, sehr schnell, bewährt; Prebuilds für linux-arm64                |
-| ORM / Migrationen | **Drizzle ORM** + drizzle-kit                               | Typsichere Queries, SQL-nahe, generiert lesbare SQL-Migrationen           |
-| Logging           | **pino** mit Redaction                                      | Strukturiert, ressourcenschonend                                          |
-| Frontend          | **React 19 + Vite**                                         | Vorgabe; schnelle Builds                                                  |
-| Styling / UI      | **Tailwind CSS v4 + shadcn/ui** (Radix)                     | Komponenten liegen im Repo, anpassbar, kein Laufzeit-Lock-in              |
-| Routing           | **React Router** (Library-Modus)                            | Verbreitet, ausreichend                                                   |
-| Server-State      | **TanStack Query**                                          | Caching, optimistische Updates, Persistenz für Offline-Lesen              |
-| Formulare         | **react-hook-form** + Zod-Resolver                          | Passt zu shadcn/ui-Formularen                                             |
-| Diagramme         | **Recharts** (über shadcn „Charts“)                         | Konsistentes Styling                                                      |
-| Datum/Zeit        | **date-fns** (+ `@date-fns/tz`)                             | Modular, tree-shakeable                                                   |
-| Icons             | **lucide-react**                                            | Standard bei shadcn                                                       |
-| PWA               | **vite-plugin-pwa** (Workbox)                               | Manifest + Service Worker                                                 |
-| Tests             | **Vitest** (Unit/Integration), **Playwright** (E2E, später) | Einheitlich, schnell                                                      |
-| Container         | Docker (Multi-Arch amd64/arm64), Docker Compose lokal       |                                                                           |
+| Schicht           | Wahl                                                        | Begründung                                                                                       |
+| ----------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Runtime           | **Node.js 24 LTS**                                          | Aktuelle LTS, ARM64 offiziell unterstützt                                                        |
+| Sprache           | **TypeScript (strict)** überall                             | Gemeinsame Typen Frontend/Backend                                                                |
+| Monorepo          | **npm Workspaces** (`shared`, `backend`, `frontend`)        | Keine zusätzliche Tooling-Abhängigkeit (pnpm/turbo unnötig bei 3 Paketen)                        |
+| Validierung       | **Zod** (in `shared`)                                       | Eine Schemaquelle für API, Formulare und DB-JSON                                                 |
+| Backend-Framework | **Hono** + `@hono/node-server`                              | Klein, schnell, Web-Standards, gute TS-Typen, Zod-Validator                                      |
+| Datenbank         | **SQLite** via **better-sqlite3**                           | Synchron, sehr schnell, bewährt; Prebuilds für linux-arm64                                       |
+| ORM / Migrationen | **Drizzle ORM** + drizzle-kit                               | Typsichere Queries, SQL-nahe, generiert lesbare SQL-Migrationen                                  |
+| Logging           | **pino** mit Redaction                                      | Strukturiert, ressourcenschonend                                                                 |
+| Frontend          | **React 19 + Vite**                                         | Vorgabe; schnelle Builds                                                                         |
+| Styling / UI      | **Tailwind CSS v4 + shadcn/ui** (Radix)                     | Komponenten liegen im Repo, anpassbar, kein Laufzeit-Lock-in                                     |
+| Routing           | **React Router** (Library-Modus)                            | Verbreitet, ausreichend                                                                          |
+| Server-State      | **TanStack Query**                                          | Caching, optimistische Updates, Persistenz für Offline-Lesen                                     |
+| Formulare         | **react-hook-form** + Zod-Resolver                          | Passt zu shadcn/ui-Formularen                                                                    |
+| Diagramme         | **Eigene SVG-Komponenten** (`frontend/src/features/stats/`) | Klein (statt ~100 KB Recharts), volle Kontrolle über Touch-Bedienung und Design-Tokens (ADR-037) |
+| Datum/Zeit        | **date-fns** (+ `@date-fns/tz`)                             | Modular, tree-shakeable                                                                          |
+| Icons             | **lucide-react**                                            | Standard bei shadcn                                                                              |
+| PWA               | **vite-plugin-pwa** (Workbox)                               | Manifest + Service Worker                                                                        |
+| Tests             | **Vitest** (Unit/Integration), **Playwright** (E2E, später) | Einheitlich, schnell                                                                             |
+| Container         | Docker (Multi-Arch amd64/arm64), Docker Compose lokal       |                                                                                                  |
 
 Bewusst **nicht** verwendet: PostgreSQL, Redis, Next.js/SSR (unnötig für private SPA), GraphQL, externe Auth-Provider, CSS-in-JS.
 

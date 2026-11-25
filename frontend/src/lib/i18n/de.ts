@@ -38,7 +38,7 @@ export const de = {
     backToToday: 'Heute',
     pastDay: 'Rückblick',
     upcoming: 'Als Nächstes geplant',
-    upcomingModules: 'Als Nächstes geplant: Statistiken und ein anpassbares Dashboard.',
+    upcomingModules: 'Auswertungen findest du unter „Statistik“.',
     noWidgets: 'Noch keine Widgets vorhanden.',
     loadError: 'Der Tag konnte nicht geladen werden.',
   },
@@ -70,7 +70,54 @@ export const de = {
   },
   stats: {
     title: 'Statistik',
-    empty: 'Auswertungen, Trends und Zusammenhänge folgen, sobald Daten vorhanden sind.',
+    empty: 'Noch keine Tracker vorhanden.',
+    tracker: 'Tracker',
+    period: 'Zeitraum',
+    periods: { 7: '7 Tage', 30: '30 Tage', 90: '90 Tage', 365: '1 Jahr' } as Record<number, string>,
+    chartLabel: (name: string, period: string) => `${name}, ${period}`,
+    perDay: 'Ø pro Tag',
+    perDayHint: { week: 'Wochenwerte: Ø pro Tag', month: 'Monatswerte: Ø pro Tag' } as Record<
+      string,
+      string
+    >,
+    highest: 'Höchster Tag',
+    lowest: 'Niedrigster Tag',
+    daysWithData: 'Tage mit Einträgen',
+    goalMet: 'Ziel erreicht',
+    goalMetValue: (met: number, of: number) => `${met} von ${of}`,
+    streak: 'Serie',
+    streakValue: (current: number, longest: number) => `${current} (beste: ${longest})`,
+    vsPrevious: (pct: string) => `${pct} ggü. vorherigem Zeitraum`,
+    noChange: 'wie im vorherigen Zeitraum',
+    noData: 'Keine Einträge in diesem Zeitraum.',
+    table: 'Werte als Tabelle',
+    date: 'Datum',
+    value: 'Wert',
+    correlation: {
+      title: 'Zusammenhänge',
+      intro:
+        'Vergleicht zwei Tracker Tag für Tag. Beschreibend – kein Beleg für Ursache und Wirkung.',
+      a: 'Tracker A',
+      b: 'Tracker B',
+      lag: 'B am Folgetag vergleichen (z. B. Bewegung → Schlaf der nächsten Nacht)',
+      sameTracker: 'Bitte zwei verschiedene Tracker wählen.',
+      tooFew: (n: number, min: number) =>
+        `Noch zu wenige gemeinsame Tage (${n} von mindestens ${min}).`,
+      days: (n: number) => `${n} gemeinsame Tage`,
+      strength: {
+        none: 'kaum ein Zusammenhang',
+        weak: 'ein schwacher Zusammenhang',
+        moderate: 'ein mittlerer Zusammenhang',
+        strong: 'ein deutlicher Zusammenhang',
+      } as Record<string, string>,
+      direction: (a: string, b: string, positive: boolean) =>
+        positive
+          ? `An Tagen mit höherem Wert bei „${a}“ war „${b}“ tendenziell ebenfalls höher.`
+          : `An Tagen mit höherem Wert bei „${a}“ war „${b}“ tendenziell niedriger.`,
+      summary: (strength: string) => `In diesem Zeitraum zeigt sich ${strength}`,
+      coefficient: 'Rangkorrelation (Spearman)',
+      scatterLabel: (a: string, b: string) => `Streudiagramm: ${a} gegen ${b}`,
+    },
   },
   settings: {
     title: 'Einstellungen',
