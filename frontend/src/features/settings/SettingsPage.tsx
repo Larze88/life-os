@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { ApiError, api } from '@/lib/api';
 import { formatDateTime } from '@/lib/format';
 import { de } from '@/lib/i18n/de';
+import { APP_VERSION } from '@/lib/app-version';
 import { queryKeys } from '@/lib/query-keys';
 import { BackupSection } from './BackupSection';
 import { useChangePassword, useLogout, useRevokeSession, useSessions } from '../auth/auth-api';
@@ -178,7 +179,9 @@ function AboutInfo() {
   });
   return (
     <dl className="grid grid-cols-2 gap-y-2 text-sm">
-      <dt className="text-muted-foreground">{de.settings.version}</dt>
+      <dt className="text-muted-foreground">{de.settings.appVersion}</dt>
+      <dd className="text-right tabular-nums">{APP_VERSION}</dd>
+      <dt className="text-muted-foreground">{de.settings.serverVersion}</dt>
       <dd className="text-right tabular-nums">{health.data?.version ?? '–'}</dd>
       <dt className="text-muted-foreground">{de.settings.server}</dt>
       <dd className="text-right">

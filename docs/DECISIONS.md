@@ -155,3 +155,8 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 ## ADR-030 · Neue Standard-Tracker in bestehenden Installationen (2026-11-25)
 
 **Entscheidung:** Neue Module legen ihre Standard-Tracker und Widgets beim nächsten Start per Seed an (hinten angehängt). Bestehende Tracker werden nicht verändert, auch nicht umbenannte oder archivierte.
+
+## ADR-031 · Aktive Update-Prüfung der PWA (2026-11-25)
+**Kontext:** Die installierte App auf Android bleibt oft im Hintergrund aktiv und wird nie neu geladen; neue Versionen kamen dadurch nicht an.
+**Entscheidung:** Der Service Worker sucht beim Zurückkehren in den Vordergrund und alle 30 Minuten nach Updates (`registration.update()`); `autoUpdate` aktiviert und lädt dann neu. Zusätzlich vergleicht ein Hinweis-Banner die Build-Version des Frontends mit der Server-Version (`/health`) und bietet „Neu laden“ an.
+

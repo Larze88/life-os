@@ -7,6 +7,7 @@ import { de } from '@/lib/i18n/de';
 import { useOnlineStatus } from '@/lib/use-online-status';
 import { cn } from '@/lib/utils';
 import { navItems } from './nav-items';
+import { UpdateBanner } from './UpdateBanner';
 
 /**
  * Mobile: content + bottom tab bar with a central quick-add button (thumb reach).
@@ -66,6 +67,7 @@ function AppShell() {
           </div>
         )}
         <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-32 pt-[max(1rem,env(safe-area-inset-top))] md:px-8 md:pb-12">
+          <UpdateBanner />
           <Outlet />
         </main>
       </div>
