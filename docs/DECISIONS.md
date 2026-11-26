@@ -201,3 +201,8 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 **Entscheidung:** Neue Spalte `dashboard_widgets.hidden` (erste Migration nach dem Start, `0001`). `PUT /dashboard/layout` speichert Reihenfolge und Sichtbarkeit aller Widgets in einer Transaktion und verlangt die vollständige Liste (409 bei veraltetem Stand). Bedienung mit Schalter und ↑/↓ statt Drag & Drop.
 **Begründung:** Zuverlässig und barrierearm auf dem Handy, keine zusätzliche Abhängigkeit. Ausgeblendete Widgets behalten ihre Daten; neue Module erscheinen sichtbar am Ende.
 **Verifikation:** Upgrade realistisch geprüft – Datenbank der Vorversion 0.5.0 mit Daten → neue Version: Sicherung vor Migration, Daten und Sitzung erhalten.
+
+## ADR-040 · Bottom Sheets unabhängig von Safe-Area-Angaben (2026-11-26)
+
+**Kontext:** Auf einem Samsung-Handy lag der Speichern-Knopf im Schlaf-Sheet hinter der Android-Navigationsleiste. Manche Android/Chrome-Versionen zeichnen installierte Web-Apps hinter die Systemleiste, ohne `env(safe-area-inset-bottom)` korrekt zu melden. Zusätzlich fokussierte das Sheet beim Öffnen das erste Eingabefeld, sodass Tastatur bzw. Uhrzeit-Wähler sofort aufsprangen.
+**Entscheidung:** Sheets reservieren unten mindestens 5 rem (80 px), unabhängig von `env()`; sie fokussieren beim Öffnen sich selbst statt eines Eingabefelds; zweispaltige Formulare dürfen schrumpfen, horizontales Scrollen im Sheet ist ausgeschlossen.

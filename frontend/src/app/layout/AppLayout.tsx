@@ -74,7 +74,7 @@ function AppShell() {
 
       <nav
         aria-label={de.nav.main}
-        className="fixed inset-x-0 bottom-0 z-30 border-t bg-card/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 border-t bg-card/85 pb-[max(0.25rem,env(safe-area-inset-bottom))] backdrop-blur-xl md:hidden"
       >
         <div className="mx-auto grid h-16 max-w-md grid-cols-5 items-center">
           {[first, second].map((item) => item && <TabLink key={item.to} {...item} />)}

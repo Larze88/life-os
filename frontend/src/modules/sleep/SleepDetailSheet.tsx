@@ -99,8 +99,8 @@ function SleepForm({
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-3">
+        <div className="flex min-w-0 flex-col gap-2">
           <Label htmlFor="sleep-bed">{de.sleep.bedtime}</Label>
           <Input
             id="sleep-bed"

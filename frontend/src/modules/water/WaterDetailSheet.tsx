@@ -259,8 +259,8 @@ function WaterSettings({ trackerDay }: TrackerUiProps) {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-3 border-t pt-4">
       <h3 className="text-sm font-semibold text-muted-foreground">{de.settings.title}</h3>
-      <div className="grid grid-cols-2 gap-3">
-        <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-3">
+        <div className="flex min-w-0 flex-col gap-2">
           <Label htmlFor="water-goal">{de.water.dailyGoal}</Label>
           <Input
             id="water-goal"

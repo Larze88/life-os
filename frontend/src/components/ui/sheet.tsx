@@ -20,6 +20,7 @@ function SheetClose(props: React.ComponentProps<typeof DialogPrimitive.Close>) {
 function SheetContent({
   className,
   children,
+  onOpenAutoFocus,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content>) {
   return (
@@ -27,8 +28,18 @@ function SheetContent({
       <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0" />
       <DialogPrimitive.Content
         data-slot="sheet-content"
+        // Focus the sheet itself instead of its first input: on phones an auto-focused field
+        // pops up the keyboard/time picker immediately and covers the buttons (ADR-040).
+        onOpenAutoFocus={(event) => {
+          onOpenAutoFocus?.(event);
+          if (event.defaultPrevented) return;
+          event.preventDefault();
+          (event.currentTarget as HTMLElement | null)?.focus({ preventScroll: true });
+        }}
         className={cn(
-          'fixed inset-x-0 bottom-0 z-50 flex max-h-[90dvh] flex-col gap-4 overflow-y-auto rounded-t-3xl bg-background p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl outline-none',
+          // Generous bottom space independent of env(): some Android/Chrome versions draw the app
+          // behind the system navigation bar without reporting a safe-area inset (ADR-040).
+          'fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] flex-col gap-4 overflow-x-hidden overflow-y-auto overscroll-contain rounded-t-3xl bg-background p-5 pb-[max(5rem,calc(env(safe-area-inset-bottom)+2rem))] shadow-2xl outline-none',
           'data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom',
           'md:inset-x-auto md:bottom-auto md:left-1/2 md:top-1/2 md:w-full md:max-w-lg md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-3xl md:data-[state=open]:slide-in-from-bottom-4',
           className,
