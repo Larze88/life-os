@@ -33,9 +33,14 @@ export type TrackerCreate = z.input<typeof trackerCreateSchema>;
 export const trackerUpdateSchema = z
   .object({
     name: z.string().trim().min(1).max(60).optional(),
+    /** Short symbol such as an emoji; null removes it. */
+    icon: z.string().trim().max(8).nullable().optional(),
     config: z.unknown().optional(),
   })
-  .refine((v) => v.name !== undefined || v.config !== undefined, 'Nothing to update');
+  .refine(
+    (v) => v.name !== undefined || v.config !== undefined || v.icon !== undefined,
+    'Nothing to update',
+  );
 export type TrackerUpdate = z.infer<typeof trackerUpdateSchema>;
 
 export const goalSchema = z.object({

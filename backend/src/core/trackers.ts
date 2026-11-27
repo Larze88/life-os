@@ -7,7 +7,7 @@ import {
   type TrackerUpdate,
 } from '@lifeos/shared';
 import type { Db } from '../db/client.ts';
-import { trackers } from '../db/schema.ts';
+import { dashboardWidgets, trackers } from '../db/schema.ts';
 import { problems, zodErrorsToRecord } from '../lib/problem.ts';
 
 type TrackerRow = typeof trackers.$inferSelect;
@@ -50,6 +50,7 @@ export function updateTracker(
 
   const changes: Partial<TrackerRow> = { updatedAt: new Date().toISOString() };
   if (update.name !== undefined) changes.name = update.name;
+  if (update.icon !== undefined) changes.icon = update.icon || null;
   if (update.config !== undefined) {
     const parsed = module.configSchema.safeParse(update.config);
     if (!parsed.success)
@@ -57,6 +58,12 @@ export function updateTracker(
         'Invalid tracker config',
         prefix('config', zodErrorsToRecord(parsed.error)),
       );
+    // Existing entries must stay valid (e.g. custom tracker fields), ADR-041.
+    const conflict = module.validateConfigChange?.(
+      module.configSchema.parse(row.config),
+      parsed.data,
+    );
+    if (conflict) throw problems.badRequest(conflict, { config: [conflict] });
     changes.config = parsed.data;
   }
   db.update(trackers).set(changes).where(eq(trackers.id, id)).run();
@@ -126,7 +133,26 @@ export function createTracker(
     configVersion: 1,
     sortOrder: maxSort + 1,
   };
-  db.insert(trackers).values(row).run();
+  db.transaction((tx) => {
+    tx.insert(trackers).values(row).run();
+    // Modules like custom trackers give every new tracker its own dashboard widget.
+    if (module.userTrackerWidget) {
+      const maxPos =
+        tx
+          .select({ n: sql<number | null>`max(${dashboardWidgets.position})` })
+          .from(dashboardWidgets)
+          .get()?.n ?? -1;
+      tx.insert(dashboardWidgets)
+        .values({
+          id: uuidv7(),
+          widgetType: module.userTrackerWidget.type,
+          trackerId: id,
+          size: module.userTrackerWidget.size,
+          position: maxPos + 1,
+        })
+        .run();
+    }
+  });
   return toTracker({ ...row, archivedAt: null, createdAt: '', updatedAt: '' });
 }
 

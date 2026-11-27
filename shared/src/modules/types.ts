@@ -40,12 +40,34 @@ export interface ModuleDefinition<Config = unknown, Data = unknown> {
   dailyCompletion?: (config: Config, date: string) => { due: boolean; target: number };
   /** Whether the user can create own trackers of this module (e.g. habits). */
   userTrackers?: boolean;
+  /** Widget created together with each user-created tracker (e.g. custom trackers). */
+  userTrackerWidget?: WidgetSeed;
+  /**
+   * Per-tracker behaviour for modules whose trackers define their own fields (custom
+   * trackers): payload validation, primary value and daily aggregate depend on the config.
+   * Anything returned here overrides the module-level counterpart (ADR-041).
+   */
+  forTracker?: (config: Config) => TrackerBehaviour;
+  /** Rejects config changes that would invalidate existing entries; returns an error text. */
+  validateConfigChange?: (previous: Config, next: Config) => string | null;
   /** Dashboard widgets not bound to one tracker (e.g. all habits), seeded once per type. */
   defaultWidgets?: readonly WidgetSeed[];
   /** Upgrade functions: upgrade[n] converts a payload from version n to n + 1. */
   upgrade?: Readonly<Record<number, (data: unknown) => unknown>>;
   /** Trackers created on first start (idempotent seed). */
   defaultTrackers?: readonly TrackerSeed<Config>[];
+}
+
+export type Aggregate = 'sum' | 'avg' | 'last' | 'count' | 'max';
+
+export interface TrackerBehaviour {
+  dataSchema?: z.ZodType;
+  deriveValue?: (entry: {
+    occurredAt: string;
+    endsAt: string | null;
+    data: Record<string, unknown>;
+  }) => number | null;
+  aggregate?: Aggregate;
 }
 
 export interface TrackerSeed<Config = unknown> {

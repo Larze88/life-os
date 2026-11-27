@@ -18,6 +18,7 @@ describe('phase 3b modules', () => {
       'measurement',
       'symptom',
       'focus',
+      'custom',
     ]);
   });
 

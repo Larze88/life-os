@@ -1,5 +1,11 @@
 import { and, asc, gte, inArray, isNull, lt, lte } from 'drizzle-orm';
-import { STATS_MAX_DAYS, addDays, type History, type ModuleRegistry } from '@lifeos/shared';
+import {
+  STATS_MAX_DAYS,
+  addDays,
+  resolveAggregate,
+  type History,
+  type ModuleRegistry,
+} from '@lifeos/shared';
 import type { Db } from '../db/client.ts';
 import { entries } from '../db/schema.ts';
 import { problems } from '../lib/problem.ts';
@@ -52,7 +58,10 @@ export function getHistory(db: Db, registry: ModuleRegistry, from: string, to: s
             const values = day.get(t.id)!;
             return {
               trackerId: t.id,
-              value: aggregateValues(registry.require(t.module).primaryValue.aggregate, values),
+              value: aggregateValues(
+                resolveAggregate(registry.require(t.module), t.config),
+                values,
+              ),
               count: values.length,
             };
           }),

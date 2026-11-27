@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
 import {
   moduleRegistry,
+  resolveAggregate,
   todayLocalDate,
   uuidv7,
   type DaySummary,
@@ -80,7 +81,8 @@ function patchDay(
       ...day,
       trackers: day.trackers.map((t) => {
         if (t.tracker.id !== trackerId) return t;
-        const aggregate = moduleRegistry.get(t.tracker.module)?.primaryValue.aggregate;
+        const module = moduleRegistry.get(t.tracker.module);
+        const aggregate = module ? resolveAggregate(module, t.tracker.config) : undefined;
         if (aggregate !== 'sum' && aggregate !== 'count') return t;
         const delta = aggregate === 'count' ? deltaCount : deltaValue;
         const count = Math.max(0, t.count + deltaCount);

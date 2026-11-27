@@ -206,3 +206,10 @@ Kurzform: Kontext → Entscheidung → Konsequenz. Neue Entscheidungen unten anh
 
 **Kontext:** Auf einem Samsung-Handy lag der Speichern-Knopf im Schlaf-Sheet hinter der Android-Navigationsleiste. Manche Android/Chrome-Versionen zeichnen installierte Web-Apps hinter die Systemleiste, ohne `env(safe-area-inset-bottom)` korrekt zu melden. Zusätzlich fokussierte das Sheet beim Öffnen das erste Eingabefeld, sodass Tastatur bzw. Uhrzeit-Wähler sofort aufsprangen.
 **Entscheidung:** Sheets reservieren unten mindestens 5 rem (80 px), unabhängig von `env()`; sie fokussieren beim Öffnen sich selbst statt eines Eingabefelds; zweispaltige Formulare dürfen schrumpfen, horizontales Scrollen im Sheet ist ausgeschlossen.
+
+## ADR-041 · Eigene Tracker über tracker-spezifisches Verhalten (2026-11-27)
+
+**Kontext:** Bisher legte jedes Modul Datenschema, Hauptwert und Tagesaggregat fest. Eigene Tracker bringen ihre Felder mit, also hängt all das von der Tracker-Konfiguration ab.
+**Entscheidung:** Der Modulvertrag erhält `forTracker(config)` (Datenschema aus den Feldern via `buildDataSchema`, Hauptwert aus `primaryField`, Aggregat), `userTrackerWidget` (eigene Dashboard-Karte pro Tracker) und `validateConfigChange` (Schutz bestehender Einträge). Alle Stellen, die bisher `module.primaryValue.aggregate` nutzten, verwenden `resolveAggregate(module, config)`; `isZeroWhenMissing` berücksichtigt die Konfiguration. Bestehende Module bleiben unverändert (Regel 9).
+**Regeln für Änderungen:** Felder werden nie gelöscht (nur ausgeblendet), Typ und Skalenbereich bleiben fest, Auswahlmöglichkeiten dürfen nur ergänzt werden, der Hauptwert ist nach dem Anlegen fest. Feldschlüssel sind fortlaufend (`f1`, `f2`, …) und werden nie wiederverwendet.
+**Konsequenz:** Neue Tracking-Bereiche ohne Code-Änderung; Statistik, Verlauf, Zusammenhänge und Export funktionieren automatisch.

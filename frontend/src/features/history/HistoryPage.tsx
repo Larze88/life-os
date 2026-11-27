@@ -26,6 +26,7 @@ const DOT: Record<string, string> = {
   measurement: 'bg-measurement',
   symptom: 'bg-symptom',
   focus: 'bg-focus',
+  custom: 'bg-custom',
 };
 
 function dayLine(item: HistoryDay['trackers'][number], tracker: Tracker): string {

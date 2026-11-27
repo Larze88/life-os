@@ -9,6 +9,7 @@ const TEXT: Record<string, string> = {
   measurement: 'text-measurement',
   symptom: 'text-symptom',
   focus: 'text-focus',
+  custom: 'text-custom',
 };
 
 const CHIP: Record<string, string> = {
@@ -21,6 +22,7 @@ const CHIP: Record<string, string> = {
   measurement: 'bg-measurement text-white',
   symptom: 'bg-symptom text-white',
   focus: 'bg-focus text-white',
+  custom: 'bg-custom text-white',
 };
 
 export const moduleTextClass = (color: string | null) => TEXT[color ?? ''] ?? 'text-primary';

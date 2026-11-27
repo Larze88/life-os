@@ -9,3 +9,5 @@ export * from './measurement/definition.ts';
 export * from './symptom/definition.ts';
 export * from './focus/definition.ts';
 export * from './meal/definition.ts';
+export * from './behaviour.ts';
+export * from './custom/definition.ts';

@@ -54,9 +54,13 @@ export function upsertEntry(
     throw problems.badRequest('Validation failed', { trackerId: ['Unbekannter Tracker'] });
   }
   const module = registry.require(tracker.module);
+  // Custom trackers validate and derive per tracker (ADR-041).
+  const behaviour = module.forTracker?.(tracker.config);
+  const dataSchema = behaviour?.dataSchema ?? module.dataSchema;
+  const deriveValue = behaviour?.deriveValue ?? module.deriveValue;
 
   const errors: Record<string, string[]> = {};
-  const data = module.dataSchema.safeParse(input.data);
+  const data = dataSchema.safeParse(input.data);
   if (!data.success) Object.assign(errors, prefix('data', zodErrorsToRecord(data.error)));
 
   const occurredAt = new Date(input.occurredAt).toISOString();
@@ -70,8 +74,8 @@ export function upsertEntry(
 
   // Modules like sleep compute the value themselves (e.g. duration from start/end).
   const rawValue =
-    module.deriveValue && data.success && (module.entryKind !== 'span' || endsAt)
-      ? module.deriveValue({ occurredAt, endsAt, data: data.data })
+    deriveValue && data.success && (module.entryKind !== 'span' || endsAt)
+      ? deriveValue({ occurredAt, endsAt, data: data.data as Record<string, unknown> })
       : input.value;
   const value = module.valueSchema.safeParse(rawValue);
   if (!value.success && !errors.endsAt)

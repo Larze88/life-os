@@ -115,7 +115,7 @@ function TrackerStats({
   const fmt = getFrontendModule(tracker.module)?.formatValue;
   const format = (v: number) => (fmt ? fmt(v, tracker) : formatDecimal(v));
   const granularity = granularityFor(periodDays);
-  const points = toChartPoints(series.days, granularity, isZeroWhenMissing(module));
+  const points = toChartPoints(series.days, granularity, isZeroWhenMissing(module, tracker.config));
   const kind = series.aggregate === 'sum' || series.aggregate === 'count' ? 'bar' : 'line';
   const { summary } = series;
 

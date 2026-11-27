@@ -14,6 +14,7 @@ import { de } from '@/lib/i18n/de';
 import { APP_VERSION } from '@/lib/app-version';
 import { queryKeys } from '@/lib/query-keys';
 import { BackupSection } from './BackupSection';
+import { CustomTrackersSection } from './CustomTrackersSection';
 import { useChangePassword, useLogout, useRevokeSession, useSessions } from '../auth/auth-api';
 
 export function SettingsPage() {
@@ -27,6 +28,13 @@ export function SettingsPage() {
           <Button variant="outline" onClick={() => logout.mutate()} disabled={logout.isPending}>
             <LogOut /> {de.auth.logout}
           </Button>
+        </Section>
+        <Section
+          id="eigene-tracker"
+          title={de.custom.sectionTitle}
+          description={de.custom.sectionHint}
+        >
+          <CustomTrackersSection />
         </Section>
         <Section id="datensicherung" title={de.backup.title} description={de.backup.description}>
           <BackupSection />

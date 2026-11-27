@@ -58,7 +58,7 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 - [x] Beschwerden (erweiterbarer Katalog, Stärke 1–10, Notiz)
 - [x] Ernährung (Mahlzeit per Tipp, Beschreibung, Merkmale)
 - [x] Fokus (Timer oder manuell, Konzentration, Produktivität, Aufgabe)
-- [ ] Eigene Tracker (`custom`, Feld-Editor) → eigener Schritt
+- [x] Eigene Tracker (`custom`, Feld-Editor, Version 0.8.0)
 
 ## Phase 4 – Statistiken ✅ (2026-11-25, Version 0.5.0)
 

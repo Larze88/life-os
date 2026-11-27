@@ -40,6 +40,7 @@
   --module-measurement: oklch(0.62 0.12 200);
   --module-symptom: oklch(0.62 0.18 15);
   --module-focus: oklch(0.6 0.17 305);
+  --module-custom: oklch(0.62 0.12 175);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -93,6 +94,7 @@
   --color-measurement: var(--module-measurement);
   --color-symptom: var(--module-symptom);
   --color-focus: var(--module-focus);
+  --color-custom: var(--module-custom);
 }
 
 @layer base {

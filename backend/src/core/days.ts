@@ -1,5 +1,10 @@
 import { and, asc, eq, isNull } from 'drizzle-orm';
-import type { DaySummary, ModuleRegistry, Widget } from '@lifeos/shared';
+import {
+  resolveAggregate,
+  type DaySummary,
+  type ModuleRegistry,
+  type Widget,
+} from '@lifeos/shared';
 import type { Db } from '../db/client.ts';
 import { entries } from '../db/schema.ts';
 import { aggregateValues } from './aggregate.ts';
@@ -22,7 +27,7 @@ export function getDaySummary(db: Db, registry: ModuleRegistry, date: string): D
     const module = registry.require(row.module);
     return {
       tracker: toTracker(row),
-      value: aggregateValues(module.primaryValue.aggregate, values),
+      value: aggregateValues(resolveAggregate(module, row.config), values),
       count: values.length,
       goal: dailyGoalOn(db, row.id, date),
     };

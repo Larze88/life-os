@@ -122,18 +122,18 @@ Von Drizzle verwaltet (`__drizzle_migrations`).
 
 ## 4. Modul-Payloads (`data`) und Hauptwert (`value`)
 
-| Modul         | Art               | `value`                     | `data` (Auszug)                                                                          |
-| ------------- | ----------------- | --------------------------- | ---------------------------------------------------------------------------------------- |
-| `water`       | instant           | Menge in ml                 | `{ beverage?: 'water'│'tea'│… }`                                                         |
-| `sleep`       | span (Tag = Ende) | Dauer in Minuten            | `{ quality: 1–5, rested?: 1–5, latencyMin?, awakenings? }`                               |
-| `mood`        | instant           | Stimmung 1–5                | `{ energy?: 1–5, stress?: 1–5, wellbeing?: 1–5, tags?: string[] }`                       |
-| `habit`       | instant           | Anzahl (meist 1)            | `{}`                                                                                     |
-| `activity`    | span oder Dauer   | Dauer in Minuten            | `{ type: string, intensity: 1–3, distanceKm?, rpe?: 1–10 }`                              |
-| `meal`        | instant           | `NULL`                      | `{ mealType: 'breakfast'│'lunch'│'dinner'│'snack', description?, tags?, satiety?: 1–5 }` |
-| `measurement` | instant           | Messwert in Tracker-Einheit | `{ secondary?: number }` (z. B. diastolisch)                                             |
-| `symptom`     | instant           | Intensität 0–10             | `{ symptom: string, location? }`                                                         |
-| `focus`       | span oder Dauer   | Dauer in Minuten            | `{ concentration?: 1–5, productivity?: 1–5, task? }`                                     |
-| `custom`      | instant           | Wert des `primaryField`     | `{ [fieldKey]: value }` gemäß Feldliste in `trackers.config`                             |
+| Modul         | Art               | `value`                                                                                                            | `data` (Auszug)                                                                                                |
+| ------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `water`       | instant           | Menge in ml                                                                                                        | `{ beverage?: 'water'│'tea'│… }`                                                                               |
+| `sleep`       | span (Tag = Ende) | Dauer in Minuten                                                                                                   | `{ quality: 1–5, rested?: 1–5, latencyMin?, awakenings? }`                                                     |
+| `mood`        | instant           | Stimmung 1–5                                                                                                       | `{ energy?: 1–5, stress?: 1–5, wellbeing?: 1–5, tags?: string[] }`                                             |
+| `habit`       | instant           | Anzahl (meist 1)                                                                                                   | `{}`                                                                                                           |
+| `activity`    | span oder Dauer   | Dauer in Minuten                                                                                                   | `{ type: string, intensity: 1–3, distanceKm?, rpe?: 1–10 }`                                                    |
+| `meal`        | instant           | `NULL`                                                                                                             | `{ mealType: 'breakfast'│'lunch'│'dinner'│'snack', description?, tags?, satiety?: 1–5 }`                       |
+| `measurement` | instant           | Messwert in Tracker-Einheit                                                                                        | `{ secondary?: number }` (z. B. diastolisch)                                                                   |
+| `symptom`     | instant           | Intensität 0–10                                                                                                    | `{ symptom: string, location? }`                                                                               |
+| `focus`       | span oder Dauer   | Dauer in Minuten                                                                                                   | `{ concentration?: 1–5, productivity?: 1–5, task? }`                                                           |
+| `custom` ✅   | instant           | Wert des `primaryField` (Ja/Nein = 1/0), sonst `NULL`; Tagesaggregat je Tracker (`sum`/`avg`/`max`/`last`/`count`) | Felder gemäß `trackers.config.fields`; Prüfung, Hauptwert und Aggregat pro Tracker über `forTracker` (ADR-041) |
 
 ### Tracker-Konfiguration (`config`) – Beispiele
 

@@ -4,6 +4,7 @@ import {
   STATS_MAX_DAYS,
   addDays,
   isZeroWhenMissing,
+  resolveAggregate,
   spearman,
   type Correlation,
   type ModuleRegistry,
@@ -67,8 +68,11 @@ function firstEntryDate(db: Db, trackerId: string): string | null {
   return entrySpan(db, trackerId).first;
 }
 
-function zeroWhenMissingFor(registry: ModuleRegistry, moduleId: string): boolean {
-  return isZeroWhenMissing(registry.require(moduleId));
+function zeroWhenMissingFor(
+  registry: ModuleRegistry,
+  tracker: { module: string; config: unknown },
+): boolean {
+  return isZeroWhenMissing(registry.require(tracker.module), tracker.config);
 }
 
 /**
@@ -86,10 +90,10 @@ export function getStatsSeries(
   const tracker = getTrackerRow(db, trackerId);
   if (!tracker) throw problems.notFound();
   const module = registry.require(tracker.module);
-  const aggregate = module.primaryValue.aggregate;
+  const aggregate = resolveAggregate(module, tracker.config);
   // A missing day means "zero" only for additive point-in-time modules (no water = 0 ml).
   // For periods like sleep a missing night means "not recorded", not 0 hours.
-  const zeroWhenMissing = zeroWhenMissingFor(registry, tracker.module);
+  const zeroWhenMissing = zeroWhenMissingFor(registry, tracker);
   const start = firstEntryDate(db, trackerId);
 
   const rows = db
@@ -183,7 +187,7 @@ function correlationValues(
 ): Map<string, number> {
   const series = getStatsSeries(db, registry, trackerId, from, to);
   const tracker = getTrackerRow(db, trackerId)!;
-  const zeroWhenMissing = zeroWhenMissingFor(registry, tracker.module);
+  const zeroWhenMissing = zeroWhenMissingFor(registry, tracker);
   // Gaps are filled with 0 only between the first and the last entry (active tracking).
   const { first, last } = entrySpan(db, trackerId);
   const result = new Map<string, number>();
