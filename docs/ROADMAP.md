@@ -87,9 +87,10 @@ Ziele (`goals`) mit Gültigkeitszeitraum sind mit Wasser eingeführt.
 
 ## Danach (Backlog, priorisierbar)
 
+- [x] Homescreen-Kurzbefehle: +250 ml Wasser, Stimmung, Schlaf, Schnell erfassen (Version 0.9.0)
 - Schreib-Outbox (Offline-Erfassung)
 - [x] Dashboard anpassen (Karten ein-/ausblenden, Reihenfolge) – Version 0.6.0
-- Erinnerungen (Web Push)
+- ~~Erinnerungen (Web Push)~~ – vom Nutzer nicht gewünscht (2026-11-27)
 - Home-Assistant-Integration (Sensoren → Einträge per Import-API mit Token; umgekehrt Life-OS-Werte als HA-Sensoren)
 - Health Connect / Apple Health (Import über Export-Dateien oder Shortcuts)
 - Tags über Module hinweg, Tagesnotiz/Journal

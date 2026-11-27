@@ -10,6 +10,7 @@ import { de } from '@/lib/i18n/de';
 import { cn } from '@/lib/utils';
 import { getWidgetComponent } from '@/modules/registry';
 import { BackupReminder } from './BackupReminder';
+import { useShortcutAction } from '@/features/shortcuts/useShortcutAction';
 import { DashboardEditSheet } from './DashboardEditSheet';
 import { DayNavigator } from './DayNavigator';
 
@@ -29,6 +30,7 @@ export function TodayPage() {
   const date = requested && isLocalDate(requested) && requested <= today ? requested : today;
   const day = useDay(date);
   const [editing, setEditing] = useState(false);
+  const shortcut = useShortcutAction(day.data, date);
 
   const setDate = (next: string) =>
     setParams(next === today ? {} : { tag: next }, { replace: true });
@@ -44,6 +46,14 @@ export function TodayPage() {
         }
       />
       <DashboardEditSheet open={editing} onOpenChange={setEditing} />
+      {shortcut.Sheet && shortcut.openSheet && (
+        <shortcut.Sheet
+          trackerDay={shortcut.openSheet}
+          date={date}
+          open
+          onOpenChange={(open) => !open && shortcut.close()}
+        />
+      )}
       <div className="-mt-3 mb-5">
         <DayNavigator date={date} today={today} onChange={setDate} />
       </div>

@@ -127,6 +127,9 @@ export const de = {
     conflict: 'Das Dashboard hat sich inzwischen geändert. Bitte erneut öffnen.',
     allHidden: 'Alle Karten sind ausgeblendet. Über „Anpassen“ kannst du sie wieder einblenden.',
   },
+  shortcuts: {
+    added: (name: string) => `${name} eingetragen`,
+  },
   quickAdd: {
     title: 'Schnell erfassen',
     description: 'Ein Tipp genügt.',

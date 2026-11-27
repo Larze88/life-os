@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { SHORTCUTS } from './src/features/shortcuts/shortcuts';
 
 const rootPackage = JSON.parse(
   fs.readFileSync(path.resolve(import.meta.dirname, '..', 'package.json'), 'utf8'),
@@ -38,6 +39,13 @@ export default defineConfig({
           { src: 'pwa-512.png', sizes: '512x512', type: 'image/png' },
           { src: 'maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
+        // Long press on the app icon (Android); see src/features/shortcuts/shortcuts.ts.
+        shortcuts: SHORTCUTS.map((s) => ({
+          name: s.name,
+          short_name: s.shortName,
+          url: s.url,
+          icons: [{ src: s.icon, sizes: '96x96', type: 'image/png' }],
+        })),
       },
       workbox: {
         // App shell only — API responses are never cached by the service worker (ADR-010).
